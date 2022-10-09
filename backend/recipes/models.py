@@ -93,7 +93,7 @@ class Recipe(models.Model):
     )
     shopping_list = models.ManyToManyField(
         User,
-        related_query_name='shoping_lists',
+        related_query_name='shopping_lists',
         verbose_name='Список покупок'
     )
     ingredients = models.ManyToManyField(
