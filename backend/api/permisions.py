@@ -25,3 +25,16 @@ class AuthorStaffOrReadOnly(IsAuthenticatedOrReadOnly):
             or (request.user == obj.author)
             or request.user.is_staff
         )
+
+
+class OwnerUserOrReadOnly(IsAuthenticatedOrReadOnly):
+    """
+    Разрешение на изменение только для админа и пользователя.
+    Остальным только чтение объекта.
+    """
+    def has_object_permission(self, request, view, obj):
+        return (
+            request.method in ('GET',)
+            or (request.user == obj)
+            or request.user.is_admin
+        )
