@@ -7,14 +7,10 @@ User = get_user_model()
 
 
 class CustumAuthTest(APITestCase):
-    '''
-    Тестируем /api/auth/token/.
-    '''
+    '''Тестируем /api/auth/token/.'''
+    
     @classmethod
     def setUpClass(cls):
-        '''
-        Создаём 1 тестового пользователя для всех тестов.
-        '''
         super().setUpClass()
         cls.USER_DATA = {
             'first_name': 'Тест',
@@ -27,16 +23,10 @@ class CustumAuthTest(APITestCase):
         cls.url = '/api/auth/token/'
 
     def setUp(self):
-        '''
-        Создадим клиенты для каждого теста.
-        '''
         self.client = APIClient()
         self.auth_client = APIClient()
 
-    def test_api_custum_auth_01_get_token_valid_data(self):
-        '''
-        Тестируем получение токена /api/auth/token/login/ при валидных данных.
-        '''
+    def test_api_custom_auth_01_get_token_valid_data(self):
         user = CustumAuthTest.user
         url = CustumAuthTest.url + 'login/'
         user_data = CustumAuthTest.USER_DATA
@@ -52,7 +42,7 @@ class CustumAuthTest(APITestCase):
         )
 
         try:
-            resp_data: dict = resp.json()
+            resp_data = resp.json()
         except Exception as err:
             self.assertTrue(
                 True,
@@ -81,11 +71,7 @@ class CustumAuthTest(APITestCase):
             'Не верный токен в ответе.'
         )
 
-    def test_api_custum_auth_02_get_token_invalid_data(self):
-        '''
-        Тестируем получение токена
-        /api/auth/token/login/ при инвалидных данных.
-        '''
+    def test_api_custom_auth_02_get_token_invalid_data(self):
         url = CustumAuthTest.url + 'login/'
         user_data = CustumAuthTest.USER_DATA
         invalid_data = [
@@ -136,11 +122,7 @@ class CustumAuthTest(APITestCase):
                     texts_err[i]
                 )
 
-    def test_api_custum_auth_03_drop_token_valid_data(self):
-        '''
-        Тестируем удаление токена
-        /api/auth/token/logout/ при валидных данных.
-        '''
+    def test_api_custom_auth_03_drop_token_valid_data(self):
         user = CustumAuthTest.user
         url = CustumAuthTest.url + 'logout/'
         token = Token.objects.create(user=user)
@@ -159,11 +141,7 @@ class CustumAuthTest(APITestCase):
             'не ожидаемый status_code'
         )
 
-    def test_api_custum_auth_04_drop_token_invalid_data(self):
-        '''
-        Тестируем удаление токена
-        /api/auth/token/logout/ при инвалидных данных.
-        '''
+    def test_api_custom_auth_04_drop_token_invalid_data(self):
         user = CustumAuthTest.user
         url = CustumAuthTest.url + 'logout/'
         Token.objects.create(user=user)

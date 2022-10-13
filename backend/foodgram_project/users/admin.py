@@ -5,9 +5,8 @@ from users.models import SubscribeUser, User
 
 
 class SubscribeUserAdmin(admin.ModelAdmin):
-    '''
-    Класс SubscribeUserAdmin.
-    '''
+    '''Класс SubscribeUserAdmin.'''
+
     list_display = (
         'pk',
         'user',

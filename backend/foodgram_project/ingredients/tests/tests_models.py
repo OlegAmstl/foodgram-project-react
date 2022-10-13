@@ -3,23 +3,16 @@ from ingredients.models import Ingredient, MeasurementUnit
 
 
 class MeasurementUnitModelsTest(TestCase):
-    '''
-    Тестируем модель MeasurementUnit.
-    '''
+    '''Тестируем модель MeasurementUnit.'''
+
     @classmethod
     def setUpClass(cls):
-        '''
-        Создаём 1 экземпляр модели MeasurementUnit.
-        '''
         super().setUpClass()
         cls.m_u = MeasurementUnit.objects.create(
             name='Mu1',
         )
 
     def test_ingredients_models_m_u_have_correct_object_names(self):
-        """
-        Проверяем, что у модели MeasurementUnit корректно работает __str__.
-        """
         m_u: MeasurementUnit = MeasurementUnitModelsTest.m_u
         self.assertEqual(
             str(m_u),
@@ -27,13 +20,10 @@ class MeasurementUnitModelsTest(TestCase):
             'Тест не пройден, __str__ MeasurementUnit выводит не ожидаемое')
 
     def test_ingredients_models_m_u_have_correct_verbose_name(self):
-        '''
-        Пробежимся по полям модели MeasurementUnit и проверим verbose_name.
-        '''
         field_verboses = {
             'name': 'Название',
         }
-        m_u: MeasurementUnit = MeasurementUnitModelsTest.m_u
+        m_u = MeasurementUnitModelsTest.m_u
         for field, expected_value in field_verboses.items():
             with self.subTest(field=field):
                 self.assertEqual(
@@ -46,13 +36,10 @@ class MeasurementUnitModelsTest(TestCase):
                 )
 
     def test_ingredients_models_m_u_have_correct_help_text(self):
-        '''
-        Пробежимся по полям модели MeasurementUnit и проверим help_text.
-        '''
         field_help_text = {
             'name': 'Название',
         }
-        m_u: MeasurementUnit = MeasurementUnitModelsTest.m_u
+        m_u = MeasurementUnitModelsTest.m_u
         for field, expected_value in field_help_text.items():
             with self.subTest(field=field):
                 self.assertEqual(
@@ -66,13 +53,10 @@ class MeasurementUnitModelsTest(TestCase):
                 )
 
     def test_ingredients_models_m_u_have_correct_max_length(self):
-        '''
-        Пробежимся по полям модели MeasurementUnit и проверим max_length.
-        '''
         field_max_length = {
             'name': 200,
         }
-        m_u: MeasurementUnit = MeasurementUnitModelsTest.m_u
+        m_u = MeasurementUnitModelsTest.m_u
         for field, expected_value in field_max_length.items():
             with self.subTest(field=field):
                 self.assertEqual(
@@ -86,13 +70,10 @@ class MeasurementUnitModelsTest(TestCase):
                 )
 
     def test_ingredients_models_m_u_have_correct_unique(self):
-        '''
-        Пробежимся по полям модели MeasurementUnit и проверим unique.
-        '''
         field_unique = {
             'name': True,
         }
-        m_u: MeasurementUnit = MeasurementUnitModelsTest.m_u
+        m_u = MeasurementUnitModelsTest.m_u
         for field, expected_value in field_unique.items():
             with self.subTest(field=field):
                 self.assertEqual(
@@ -107,45 +88,35 @@ class MeasurementUnitModelsTest(TestCase):
 
 
 class IngredientModelsTest(TestCase):
-    '''
-    Тестируем модель Ingredient.
-    '''
+    '''Тестируем модель Ingredient.'''
+
     @classmethod
     def setUpClass(cls):
-        '''
-        Создаём 1 экземпляр модели Ingredient.
-        '''
         super().setUpClass()
         cls.m_u = MeasurementUnit.objects.create(
             name='Mu1',
         )
-        cls.ingrid = Ingredient.objects.create(
-            name='ingrid_1', measurement_unit=cls.m_u
+        cls.ingred = Ingredient.objects.create(
+            name='ingred_1', measurement_unit=cls.m_u
         )
 
     def test_ingredients_models_ingredient_have_correct_object_names(self):
-        """
-        Проверяем, что у модели Ingredient корректно работает __str__.
-        """
-        ingrid: Ingredient = IngredientModelsTest.ingrid
+        ingred = IngredientModelsTest.ingred
         self.assertEqual(
-            str(ingrid),
-            'Ингридиент: ingrid_1',
+            str(ingred),
+            'Ингредиент: ingred_1',
             'Тест не пройден, __str__ Ingredient выводит не ожидаемое')
 
     def test_ingredients_models_ingredient_have_correct_verbose_name(self):
-        '''
-        Пробежимся по полям модели Ingredient и проверим verbose_name.
-        '''
         field_verboses = {
             'name': 'Название',
             'measurement_unit': 'Размерность',
         }
-        ingrid: Ingredient = IngredientModelsTest.ingrid
+        ingred = IngredientModelsTest.ingred
         for field, expected_value in field_verboses.items():
             with self.subTest(field=field):
                 self.assertEqual(
-                    ingrid._meta.get_field(field).verbose_name,
+                    ingred._meta.get_field(field).verbose_name,
                     expected_value, (
                         'Тест не пройден, '
                         f'{ingrid._meta.get_field(field).verbose_name} '
@@ -154,18 +125,15 @@ class IngredientModelsTest(TestCase):
                 )
 
     def test_ingredients_models_ingredient_have_correct_help_text(self):
-        '''
-        Пробежимся по полям модели Ingredient и проверим help_text.
-        '''
         field_help_text = {
             'name': 'Название',
             'measurement_unit': 'Размерность',
         }
-        ingrid: Ingredient = IngredientModelsTest.ingrid
+        ingred = IngredientModelsTest.ingred
         for field, expected_value in field_help_text.items():
             with self.subTest(field=field):
                 self.assertEqual(
-                    ingrid._meta.get_field(field).help_text,
+                    ingred._meta.get_field(field).help_text,
                     expected_value,
                     (
                         'Тест не пройден, '
@@ -175,17 +143,14 @@ class IngredientModelsTest(TestCase):
                 )
 
     def test_ingredients_models_ingredient_have_correct_max_length(self):
-        '''
-        Пробежимся по полям модели Ingredient и проверим max_length.
-        '''
         field_max_length = {
             'name': 200,
         }
-        ingrid: Ingredient = IngredientModelsTest.ingrid
+        ingred = IngredientModelsTest.ingred
         for field, expected_value in field_max_length.items():
             with self.subTest(field=field):
                 self.assertEqual(
-                    ingrid._meta.get_field(field).max_length,
+                    ingred._meta.get_field(field).max_length,
                     expected_value,
                     (
                         'Тест не пройден, '
@@ -195,17 +160,14 @@ class IngredientModelsTest(TestCase):
                 )
 
     def test_ingredients_models_ingredient_have_correct_db_index(self):
-        '''
-        Пробежимся по полям модели Ingredient и проверим db_index.
-        '''
         field_unique = {
             'measurement_unit': True,
         }
-        ingrid: Ingredient = IngredientModelsTest.ingrid
+        ingred = IngredientModelsTest.ingred
         for field, expected_value in field_unique.items():
             with self.subTest(field=field):
                 self.assertEqual(
-                    ingrid._meta.get_field(field).db_index,
+                    ingred._meta.get_field(field).db_index,
                     expected_value,
                     (
                         'Тест не пройден, '

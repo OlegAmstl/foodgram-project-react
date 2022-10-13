@@ -12,9 +12,6 @@ class Command(BaseCommand):
     shift_path = os.path.join(BASE_DIR, 'start_data')
 
     def handle(self, *args, **kwargs):
-        '''
-        Основная функция выполнения команды.
-        '''
         print(self.shift_path)
         filename = os.path.join(self.shift_path, 'tags.csv')
         with open(filename, 'r', encoding='utf-8') as f:

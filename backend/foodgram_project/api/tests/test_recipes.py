@@ -17,23 +17,17 @@ TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 User = get_user_model()
 
 
-def add_num_to_value(d: dict, value: int):
+def add_num_to_value(dictionary, value: int):
     res = {}
-    for key, val in d.items():
+    for key, val in dictionary.items():
         res[key] = val + str(value)
     return res
 
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class RecipesTest(APITestCase):
-    '''
-    Тестируем модель /api/recipes/.
-    '''
     @classmethod
     def setUpClass(cls):
-        '''
-        Создаём фикстуры.
-        '''
         super().setUpClass()
 
         cls.url = '/api/recipes/'
@@ -88,7 +82,7 @@ class RecipesTest(APITestCase):
         )
         cls.small_gif_base64 = base64.b64encode(cls.small_gif)
 
-        cls.recipe: Recipe = Recipe.objects.create(
+        cls.recipe = Recipe.objects.create(
             author=cls.author, name='Тест Рецепт', text='Много текста',
             cooking_time=42, image=cls.uploaded
         )
@@ -110,16 +104,10 @@ class RecipesTest(APITestCase):
 
     @classmethod
     def tearDownClass(cls):
-        '''
-        Удаляем лишнее по завершении тестов.
-        '''
         super().tearDownClass()
         shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def setUp(self):
-        '''
-        Создадим клиенты для каждого теста.
-        '''
         self.client = APIClient()
 
         self.auth_client1 = APIClient()
@@ -135,9 +123,6 @@ class RecipesTest(APITestCase):
             HTTP_AUTHORIZATION='Token ' + RecipesTest.token_author.key)
 
     def test_api_recipes_01_url_list_and_retrieve_ok(self):
-        '''
-        Тестируем доступность url.
-        '''
         urls = [
             RecipesTest.url,
             RecipesTest.url + f'{RecipesTest.recipe.id}/',
@@ -151,15 +136,12 @@ class RecipesTest(APITestCase):
                 )
 
     def test_api_recipes_02_url_test_retrieve(self):
-        '''
-        Тестируем ответ retrieve /api/recipes/{id}/.
-        '''
-        recipe: Recipe = RecipesTest.recipe
+        recipe = RecipesTest.recipe
 
         url = RecipesTest.url + f'{recipe.id}/'
         resp = self.client.get(url)
         try:
-            resp_data: dict = resp.json()
+            resp_data = resp.json()
         except Exception as err:
             self.assertTrue(
                 True,
@@ -256,13 +238,13 @@ class RecipesTest(APITestCase):
                         field, ingredient,
                         f'В ответе в ключе нет ключа {field}'
                     )
-            ingrid: Ingredient = Ingredient.objects.get(id=ingredient['id'])
+            ingred = Ingredient.objects.get(id=ingredient['id'])
             ingred_amount = RecipeIngredientAmount.objects.get(
-                recipe=recipe, ingredient=ingrid)
+                recipe=recipe, ingredient=ingred)
             fields_name = {
-                'id': ingrid.id,
-                'name': ingrid.name,
-                'measurement_unit': ingrid.measurement_unit.name,
+                'id': ingred.id,
+                'name': ingred.name,
+                'measurement_unit': ingred.measurement_unit.name,
                 'amount': ingred_amount.amount,
             }
             for field in fields_name:
@@ -273,14 +255,11 @@ class RecipesTest(APITestCase):
                     )
 
     def test_api_recipes_03_url_test_list(self):
-        '''
-        Тестируем ответ retrieve /api/recipes/.
-        '''
         url = RecipesTest.url
         resp = self.client.get(url)
 
         try:
-            resp_data: dict = resp.json()
+            resp_data = resp.json()
         except Exception as err:
             self.assertTrue(
                 True,
@@ -343,9 +322,6 @@ class RecipesTest(APITestCase):
                 )
 
     def test_api_recipes_04_url_test_create_valid(self):
-        '''
-        Тестируем создание рецепта /api/recipes/.
-        '''
         count_recipes = Recipe.objects.count()
         count_recipe_tags = RecipeTag.objects.count()
         count_recipe_ingred = RecipeIngredientAmount.objects.count()
@@ -371,7 +347,7 @@ class RecipesTest(APITestCase):
         )
 
         try:
-            resp_data: dict = resp.json()
+            resp_data = resp.json()
         except Exception as err:
             self.assertTrue(
                 True,
@@ -416,9 +392,6 @@ class RecipesTest(APITestCase):
         )
 
     def test_api_recipes_05_url_test_create_invalid(self):
-        '''
-        Тестируем несоздание рецепта /api/recipes/.
-        '''
         image_data = RecipesTest.small_gif_base64
         recipe_data = {
             'ingredients': [
@@ -539,237 +512,8 @@ class RecipesTest(APITestCase):
         )
         self.assertIn('cooking_time', resp.json())
 
-    # def test_api_recipes_06_url_test_patch(self):
-    #     '''
-    #     Тестируем изменение рецепта.
-    #     '''
-    #     image_data = RecipesTest.small_gif_base64
-    #     recipe: Recipe = RecipesTest.recipe
-    #     url = RecipesTest.url + f'{recipe.id}/'
-    #     recipe_data = {
-    #         'ingredients': [
-    #             {'id': RecipesTest.ingredient1.id, 'amount': 1},
-    #             {'id': RecipesTest.ingredient2.id, 'amount': 2},
-    #             {'id': RecipesTest.ingredient3.id, 'amount': 3},
-    #         ],
-    #         'tags': [RecipesTest.tag1.id, RecipesTest.tag2.id],
-    #         'image': image_data,
-    #         'name': 'ТестРецепт1',
-    #         'text': 'Текст ТестРецепта',
-    #         'cooking_time': 5
-    #     }
-    #     resp = self.client.patch(url, data=recipe_data, format='json')
-    #     self.assertEqual(
-    #         resp.status_code, status.HTTP_401_UNAUTHORIZED,
-    #         'В ответе не ожидаемый status code'
-    #     )
-    #     resp = self.auth_client1.patch(url, data=recipe_data, format='json')
-    #     self.assertEqual(
-    #         resp.status_code, status.HTTP_403_FORBIDDEN,
-    #         'В ответе не ожидаемый status code'
-    #     )
-    #     recipe_data = {
-    #         'tags': [RecipesTest.tag1.id, RecipesTest.tag2.id],
-    #         'image': image_data,
-    #         'name': 'ТестРецепт1',
-    #         'text': 'Текст ТестРецепта',
-    #         'cooking_time': 5
-    #     }
-    #     resp = self.author_client.patch(url, data=recipe_data, format='json')
-    #     self.assertEqual(
-    #         resp.status_code, status.HTTP_400_BAD_REQUEST,
-    #         'В ответе не ожидаемый status code'
-    #     )
-    #     self.assertIn('ingredients', resp.json())
-
-    #     recipe_data = {
-    #         'ingredients': [
-    #             {'id': RecipesTest.ingredient1.id, 'amount': 0},
-    #             {'id': RecipesTest.ingredient2.id, 'amount': 2},
-    #             {'id': RecipesTest.ingredient3.id, 'amount': 3},
-    #         ],
-    #         'tags': [RecipesTest.tag1.id, RecipesTest.tag2.id],
-    #         'image': image_data,
-    #         'name': 'ТестРецепт1',
-    #         'text': 'Текст ТестРецепта',
-    #         'cooking_time': 5
-    #     }
-    #     resp = self.author_client.patch(url, data=recipe_data, format='json')
-    #     self.assertEqual(
-    #         resp.status_code, status.HTTP_400_BAD_REQUEST,
-    #         'В ответе не ожидаемый status code'
-    #     )
-    #     self.assertIn('ingredients', resp.json())
-
-    #     recipe_data = {
-    #         'ingredients': [
-    #             {'id': RecipesTest.ingredient1.id, 'amount': 1},
-    #             {'id': RecipesTest.ingredient2.id, 'amount': 2},
-    #             {'id': RecipesTest.ingredient3.id, 'amount': 3},
-    #         ],
-    #         # 'tags': [RecipesTest.tag1.id, RecipesTest.tag2.id],
-    #         'image': image_data,
-    #         'name': 'ТестРецепт1',
-    #         'text': 'Текст ТестРецепта',
-    #         'cooking_time': 5
-    #     }
-    #     resp = self.author_client.patch(url, data=recipe_data, format='json')
-    #     self.assertEqual(
-    #         resp.status_code, status.HTTP_400_BAD_REQUEST,
-    #         'В ответе не ожидаемый status code'
-    #     )
-    #     self.assertIn('tags', resp.json())
-
-    #     recipe_data = {
-    #         'ingredients': [
-    #             {'id': RecipesTest.ingredient1.id, 'amount': 1},
-    #             {'id': RecipesTest.ingredient2.id, 'amount': 2},
-    #             {'id': RecipesTest.ingredient3.id, 'amount': 3},
-    #         ],
-    #         'tags': [RecipesTest.tag1.id, RecipesTest.tag2.id],
-    #         # 'image': image_data,
-    #         'name': 'ТестРецепт1',
-    #         'text': 'Текст ТестРецепта',
-    #         'cooking_time': 5
-    #     }
-    #     resp = self.author_client.patch(url, data=recipe_data, format='json')
-    #     self.assertEqual(
-    #         resp.status_code, status.HTTP_400_BAD_REQUEST,
-    #         'В ответе не ожидаемый status code'
-    #     )
-    #     self.assertIn('image', resp.json())
-
-    #     recipe_data = {
-    #         'ingredients': [
-    #             {'id': RecipesTest.ingredient1.id, 'amount': 1},
-    #             {'id': RecipesTest.ingredient2.id, 'amount': 2},
-    #             {'id': RecipesTest.ingredient3.id, 'amount': 3},
-    #         ],
-    #         'tags': [RecipesTest.tag1.id, RecipesTest.tag2.id],
-    #         'image': image_data,
-    #         # 'name': 'ТестРецепт1',
-    #         'text': 'Текст ТестРецепта',
-    #         'cooking_time': 5
-    #     }
-    #     resp = self.author_client.patch(url, data=recipe_data, format='json')
-    #     self.assertEqual(
-    #         resp.status_code, status.HTTP_400_BAD_REQUEST,
-    #         'В ответе не ожидаемый status code'
-    #     )
-    #     self.assertIn('name', resp.json())
-
-    #     recipe_data = {
-    #         'ingredients': [
-    #             {'id': RecipesTest.ingredient1.id, 'amount': 1},
-    #             {'id': RecipesTest.ingredient2.id, 'amount': 2},
-    #             {'id': RecipesTest.ingredient3.id, 'amount': 3},
-    #         ],
-    #         'tags': [RecipesTest.tag1.id, RecipesTest.tag2.id],
-    #         'image': image_data,
-    #         'name': 'ТестРецепт1',
-    #         # 'text': 'Текст ТестРецепта',
-    #         'cooking_time': 5
-    #     }
-    #     resp = self.author_client.patch(url, data=recipe_data, format='json')
-    #     self.assertEqual(
-    #         resp.status_code, status.HTTP_400_BAD_REQUEST,
-    #         'В ответе не ожидаемый status code'
-    #     )
-    #     self.assertIn('text', resp.json())
-
-    #     recipe_data = {
-    #         'ingredients': [
-    #             {'id': RecipesTest.ingredient1.id, 'amount': 1},
-    #             {'id': RecipesTest.ingredient2.id, 'amount': 2},
-    #             {'id': RecipesTest.ingredient3.id, 'amount': 3},
-    #         ],
-    #         'tags': [RecipesTest.tag1.id, RecipesTest.tag2.id],
-    #         'image': image_data,
-    #         'name': 'ТестРецепт1',
-    #         'text': 'Текст ТестРецепта',
-    #         'cooking_time': 0
-    #     }
-    #     resp = self.author_client.patch(url, data=recipe_data, format='json')
-    #     self.assertEqual(
-    #         resp.status_code, status.HTTP_400_BAD_REQUEST,
-    #         'В ответе не ожидаемый status code'
-    #     )
-    #     self.assertIn('cooking_time', resp.json())
-
-    #     recipe_data = {
-    #         'ingredients': [
-    #             {'id': RecipesTest.ingredient1.id, 'amount': 1},
-    #             {'id': RecipesTest.ingredient2.id, 'amount': 2},
-    #             {'id': RecipesTest.ingredient3.id, 'amount': 3},
-    #         ],
-    #         'tags': [RecipesTest.tag1.id, RecipesTest.tag2.id],
-    #         'image': image_data,
-    #         'name': 'ТестРецепт1',
-    #         'text': 'Текст ТестРецепта',
-    #         'cooking_time': 1
-    #     }
-    #     resp = self.author_client.patch(
-    #         RecipesTest.url + '1000/', data=recipe_data, format='json')
-    #     self.assertEqual(
-    #         resp.status_code, status.HTTP_404_NOT_FOUND,
-    #         'В ответе не ожидаемый status code'
-    #     )
-
-    #     recipe_data = {
-    #         'ingredients': [
-    #             {'id': RecipesTest.ingredient1.id, 'amount': 5}
-    #         ],
-    #         'tags': [RecipesTest.tag3.id],
-    #         'image': image_data,
-    #         'name': 'ТестРецепт15',
-    #         'text': 'Текст ТестРецепта16',
-    #         'cooking_time': 15
-    #     }
-    #     url = RecipesTest.url + f'{recipe.pk}/'
-    #     resp = self.author_client.patch(url, data=recipe_data, format='json')
-    #     self.assertEqual(
-    #         resp.status_code, status.HTTP_200_OK,
-    #         'В ответе не ожидаемый status code'
-    #     )
-    #     try:
-    #         resp_data: dict = resp.json()
-    #     except Exception as err:
-    #         self.assertTrue(
-    #             True,
-    #             msg=f'responce data is not json: {err}'
-    #         )
-    #     self.assertIsInstance(resp_data, dict, 'В ответе не dict')
-
-    #     fields_name = [
-    #         'id',
-    #         'tags',
-    #         'author',
-    #         'ingredients',
-    #         'is_favorited',
-    #         'is_in_shopping_cart',
-    #         'name',
-    #         'image',
-    #         'text',
-    #         'cooking_time'
-    #     ]
-    #     self.assertEqual(
-    #         len(resp_data), len(fields_name),
-    #         'В ответе число ключей отличается.'
-    #     )
-    #     for field in fields_name:
-    #         with self.subTest(field=field):
-    #             self.assertIn(
-    #                 field, resp_data,
-    #                 f'в ответе нет ключа {field}'
-    #             )
-    #     self.assertEqual(RecipeIngredientAmount.objects.count(), 1)
-    #     self.assertEqual(RecipeTag.objects.count(), 1)
-
     def test_api_recipes_06_url_test_delete(self):
-        '''
-        Тестируем удаление рецептов.
-        '''
-        recipe: Recipe = RecipesTest.recipe
+        recipe = RecipesTest.recipe
         count_recipes = Recipe.objects.count()
         url = RecipesTest.url + '1000/'
 

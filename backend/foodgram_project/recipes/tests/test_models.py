@@ -15,14 +15,10 @@ TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class RecipeModelsTest(TestCase):
-    '''
-    Тестируем модель Recipe.
-    '''
+    '''Тестируем модель Recipe.'''
+
     @classmethod
     def setUpClass(cls):
-        '''
-        Создаём фикстуры.
-        '''
         super().setUpClass()
         cls.USER_DATA = {
             'first_name': 'Тест',
@@ -32,15 +28,15 @@ class RecipeModelsTest(TestCase):
             'password': 'test_123',
         }
 
-        cls.user: User = User.objects.create_user(**cls.USER_DATA)
-        cls.tag: Tag = Tag.objects.create(
+        cls.user = User.objects.create_user(**cls.USER_DATA)
+        cls.tag = Tag.objects.create(
             name='Tag1',
             slug='Tag_1',
             color='#111111',
         )
         cls.m_u = MeasurementUnit.objects.create(name='Mu1')
-        cls.ingrid = Ingredient.objects.create(
-            name='ingrid_1', measurement_unit=cls.m_u)
+        cls.ingred = Ingredient.objects.create(
+            name='ingred_1', measurement_unit=cls.m_u)
         cls.small_gif = (
             b'\x47\x49\x46\x38\x39\x61\x02\x00'
             b'\x01\x00\x80\x00\x00\x00\x00\x00'
@@ -54,7 +50,7 @@ class RecipeModelsTest(TestCase):
             content=cls.small_gif,
             content_type='image/gif'
         )
-        cls.recipe: Recipe = Recipe.objects.create(
+        cls.recipe = Recipe.objects.create(
             author=cls.user, name='Тест Рецепт', text='Много текста',
             cooking_time=42, image=cls.uploaded
         )
@@ -62,7 +58,7 @@ class RecipeModelsTest(TestCase):
             recipe=cls.recipe, tag=cls.tag
         )
         cls.recipe_ingredient_amount = RecipeIngredientAmount.objects.create(
-            recipe=cls.recipe, ingredient=cls.ingrid, amount=37
+            recipe=cls.recipe, ingredient=cls.ingred, amount=37
         )
         cls.favorite_recipe = UserFavoriteRecipe.objects.create(
             user=cls.user, recipe=cls.recipe
@@ -73,16 +69,10 @@ class RecipeModelsTest(TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        '''
-        Удаляем лишнее по завершении тестов.
-        '''
         super().tearDownClass()
         shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def test_recipes_models_recipe_have_correct_verbose_name(self):
-        '''
-        Пробежимся по полям модели Recipe и проверим verbose_name.
-        '''
         field_verboses = {
             'author': 'Автор',
             'name': 'Название',
@@ -91,7 +81,7 @@ class RecipeModelsTest(TestCase):
             'tags': 'Тег',
             'ingredients': 'Список ингредиентов'
         }
-        recipe: Recipe = RecipeModelsTest.recipe
+        recipe = RecipeModelsTest.recipe
         for field, expected_value in field_verboses.items():
             with self.subTest(field=field):
                 self.assertEqual(
@@ -104,9 +94,6 @@ class RecipeModelsTest(TestCase):
                 )
 
     def test_recipes_models_recipe_have_correct_help_text(self):
-        '''
-        Пробежимся по полям модели User и проверим help_text.
-        '''
         field_help_text = {
             'author': 'Автор',
             'name': 'Название',
@@ -115,7 +102,7 @@ class RecipeModelsTest(TestCase):
             'tags': 'Тег',
             'ingredients': 'Список ингредиентов'
         }
-        recipe: Recipe = RecipeModelsTest.recipe
+        recipe = RecipeModelsTest.recipe
         for field, expected_value in field_help_text.items():
             with self.subTest(field=field):
                 self.assertEqual(
@@ -129,13 +116,10 @@ class RecipeModelsTest(TestCase):
                 )
 
     def test_recipes_models_recipe_have_correct_max_length(self):
-        '''
-        Пробежимся по полям модели User и проверим max_length.
-        '''
         field_max_length = {
             'name': 200,
         }
-        recipe: Recipe = RecipeModelsTest.recipe
+        recipe = RecipeModelsTest.recipe
         for field, expected_value in field_max_length.items():
             with self.subTest(field=field):
                 self.assertEqual(
@@ -148,11 +132,8 @@ class RecipeModelsTest(TestCase):
                     )
                 )
 
-    def test_recipes_models_recipetags_have_correct_fields(self):
-        '''
-        Пробежимся по полям модели RecipeTag и проверим поля.
-        '''
-        recipe_tag: RecipeTag = RecipeModelsTest.recipe_tag
+    def test_recipes_models_recipe_tags_have_correct_fields(self):
+        recipe_tag = RecipeModelsTest.recipe_tag
 
         field_verboses = {
             'recipe': 'Рецепт',
@@ -187,12 +168,8 @@ class RecipeModelsTest(TestCase):
                     )
                 )
 
-    def test_recipes_models_recipeingredientsamount_have_correct_fields(self):
-        '''
-        Пробежимся по полям модели RecipeIngredientAmount и проверим поля.
-        '''
-        recipe_ingrid: RecipeIngredientAmount = (
-            RecipeModelsTest.recipe_ingredient_amount)
+    def test_recipes_models_recipe_ingredients_amount_have_correct_fields(self):
+        recipe_ingred = RecipeModelsTest.recipe_ingredient_amount
 
         field_verboses = {
             'recipe': 'Рецепт',
@@ -203,10 +180,10 @@ class RecipeModelsTest(TestCase):
         for field, expected_value in field_verboses.items():
             with self.subTest(field=field):
                 self.assertEqual(
-                    recipe_ingrid._meta.get_field(field).verbose_name,
+                    recipe_ingred._meta.get_field(field).verbose_name,
                     expected_value, (
                         'Некореектный verbose_name, '
-                        f'{recipe_ingrid._meta.get_field(field).verbose_name} '
+                        f'{recipe_ingred._meta.get_field(field).verbose_name} '
                         f'вместо {expected_value}'
                     )
                 )
@@ -220,20 +197,17 @@ class RecipeModelsTest(TestCase):
         for field, expected_value in field_help_text.items():
             with self.subTest(field=field):
                 self.assertEqual(
-                    recipe_ingrid._meta.get_field(field).help_text,
+                    recipe_ingred._meta.get_field(field).help_text,
                     expected_value,
                     (
                         'Некореектный help_text, '
-                        f'{recipe_ingrid._meta.get_field(field).help_text} '
+                        f'{recipe_ingred._meta.get_field(field).help_text} '
                         f'вместо {expected_value}'
                     )
                 )
 
-    def test_recipes_models_userfavoriterecipe_have_correct_fields(self):
-        '''
-        Пробежимся по полям модели RecipeIngredientAmount и проверим поля.
-        '''
-        favor_recipe: UserFavoriteRecipe = RecipeModelsTest.favorite_recipe
+    def test_recipes_models_user_favorite_recipe_have_correct_fields(self):
+        favor_recipe = RecipeModelsTest.favorite_recipe
 
         field_verboses = {
             'recipe': 'Рецепт',
@@ -268,11 +242,8 @@ class RecipeModelsTest(TestCase):
                     )
                 )
 
-    def test_recipes_models_usershoppingcart_have_correct_fields(self):
-        '''
-        Пробежимся по полям модели RecipeIngredientAmount и проверим поля.
-        '''
-        shop_recipe: UserShoppingCart = RecipeModelsTest.shop_recipe
+    def test_recipes_models_user_shopping_cart_have_correct_fields(self):
+        shop_recipe = RecipeModelsTest.shop_recipe
 
         field_verboses = {
             'recipe': 'Рецепт',

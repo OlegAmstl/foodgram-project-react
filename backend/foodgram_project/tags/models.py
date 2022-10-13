@@ -2,9 +2,8 @@ from django.db import models
 
 
 class Tag(models.Model):
-    '''
-    Класс для тегов к рецепту.
-    '''
+    '''Класс для тегов к рецепту.'''
+
     name = models.CharField(
         max_length=200,
         verbose_name='Название',
@@ -30,7 +29,4 @@ class Tag(models.Model):
         ordering = ('slug',)
 
     def __str__(self):
-        return f'Tag: {self.slug}-{self.color}'
-
-    def __repr__(self):
         return f'Tag: {self.slug}-{self.color}'

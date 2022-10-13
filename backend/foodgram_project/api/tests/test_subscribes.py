@@ -17,23 +17,19 @@ TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 User = get_user_model()
 
 
-def add_num_to_value(d: dict, value: int):
+def add_num_to_value(dictionary, value: int):
     res = {}
-    for key, val in d.items():
+    for key, val in dictionary.items():
         res[key] = val + str(value)
     return res
 
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class SubscribesTest(APITestCase):
-    '''
-    Тестируем модель /api/users/{id}/subscribe/.
-    '''
+    '''Тестируем модель /api/users/{id}/subscribe/.'''
+
     @classmethod
     def setUpClass(cls):
-        '''
-        Создаём фикстуры.
-        '''
         super().setUpClass()
 
         cls.USER_DATA = {
@@ -86,7 +82,7 @@ class SubscribesTest(APITestCase):
         )
         cls.small_gif_base64 = base64.b64encode(cls.small_gif)
 
-        cls.recipe: Recipe = Recipe.objects.create(
+        cls.recipe = Recipe.objects.create(
             author=cls.author, name='Тест Рецепт', text='Много текста',
             cooking_time=42, image=cls.uploaded
         )
@@ -103,7 +99,7 @@ class SubscribesTest(APITestCase):
         RecipeIngredientAmount.objects.create(
             recipe=cls.recipe, ingredient=cls.ingredient3, amount=3)
 
-        cls.recipe2: Recipe = Recipe.objects.create(
+        cls.recipe2 = Recipe.objects.create(
             author=cls.author, name='Тест Рецепт Другой', text='Много',
             cooking_time=37, image=cls.uploaded
         )
@@ -118,7 +114,7 @@ class SubscribesTest(APITestCase):
         RecipeIngredientAmount.objects.create(
             recipe=cls.recipe2, ingredient=cls.ingredient3, amount=6)
 
-        cls.recipe3: Recipe = Recipe.objects.create(
+        cls.recipe3 = Recipe.objects.create(
             author=cls.author, name='Тест Рецепт Другой', text='Много',
             cooking_time=37, image=cls.uploaded
         )
@@ -135,16 +131,10 @@ class SubscribesTest(APITestCase):
 
     @classmethod
     def tearDownClass(cls):
-        '''
-        Удаляем лишнее по завершении тестов.
-        '''
         super().tearDownClass()
         shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def setUp(self):
-        '''
-        Создадим клиенты для каждого теста.
-        '''
         self.client = APIClient()
 
         self.auth_client1 = APIClient()
@@ -160,10 +150,6 @@ class SubscribesTest(APITestCase):
             HTTP_AUTHORIZATION='Token ' + SubscribesTest.token_author.key)
 
     def test_api_recipes_subscribe(self):
-        '''
-        Тестируем рецепты в подписках.
-        '''
-
         author = User.objects.get(username='usertest3')
         url = f'/api/users/{author.id}/subscribe/'
         count_subscrybe = SubscribeUser.objects.count()
@@ -177,7 +163,7 @@ class SubscribesTest(APITestCase):
         self.assertEqual(SubscribeUser.objects.count(), count_subscrybe + 1)
 
         try:
-            resp_data: dict = resp.json()
+            resp_data = resp.json()
         except Exception as err:
             self.assertTrue(
                 True,

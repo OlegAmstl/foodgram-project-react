@@ -18,23 +18,19 @@ TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 User = get_user_model()
 
 
-def add_num_to_value(d: dict, value: int):
+def add_num_to_value(dictionary, value: int):
     res = {}
-    for key, val in d.items():
+    for key, val in dictionary.items():
         res[key] = val + str(value)
     return res
 
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class ShoppingTest(APITestCase):
-    '''
-    Тестируем модель /api/recipes/{id}/shopping_cart/.
-    '''
+    '''Тестируем модель /api/recipes/{id}/shopping_cart/.'''
+
     @classmethod
     def setUpClass(cls):
-        '''
-        Создаём фикстуры.
-        '''
         super().setUpClass()
 
         cls.USER_DATA = {
@@ -87,7 +83,7 @@ class ShoppingTest(APITestCase):
         )
         cls.small_gif_base64 = base64.b64encode(cls.small_gif)
 
-        cls.recipe: Recipe = Recipe.objects.create(
+        cls.recipe = Recipe.objects.create(
             author=cls.author, name='Тест Рецепт', text='Много текста',
             cooking_time=42, image=cls.uploaded
         )
@@ -104,7 +100,7 @@ class ShoppingTest(APITestCase):
         RecipeIngredientAmount.objects.create(
             recipe=cls.recipe, ingredient=cls.ingredient3, amount=3)
 
-        cls.recipe2: Recipe = Recipe.objects.create(
+        cls.recipe2 = Recipe.objects.create(
             author=cls.author, name='Тест Рецепт Другой', text='Много',
             cooking_time=37, image=cls.uploaded
         )
@@ -121,16 +117,10 @@ class ShoppingTest(APITestCase):
 
     @classmethod
     def tearDownClass(cls):
-        '''
-        Удаляем лишнее по завершении тестов.
-        '''
         super().tearDownClass()
         shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def setUp(self):
-        '''
-        Создадим клиенты для каждого теста.
-        '''
         self.client = APIClient()
 
         self.auth_client1 = APIClient()
@@ -146,9 +136,6 @@ class ShoppingTest(APITestCase):
             HTTP_AUTHORIZATION='Token ' + ShoppingTest.token_author.key)
 
     def test_api_recipes_shopping(self):
-        '''
-        Тестируем рецепта в избранное.
-        '''
         url = '/api/recipes/?is_in_shopping_cart=1'
         resp = self.auth_client1.get(url)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
@@ -167,7 +154,7 @@ class ShoppingTest(APITestCase):
         self.assertEqual(UserShoppingCart.objects.count(), count_shopping + 1)
 
         try:
-            resp_data: dict = resp.json()
+            resp_data = resp.json()
         except Exception as err:
             self.assertTrue(
                 True,
@@ -217,9 +204,6 @@ class ShoppingTest(APITestCase):
         self.assertEqual(resp.json().get('count'), 0)
 
     def test_api_recipes_get_list(self):
-        '''
-        Проверяем возможность скачать список покупок.
-        '''
         recipe = ShoppingTest.recipe
         recipe2 = ShoppingTest.recipe2
 

@@ -3,9 +3,8 @@ from django.db import models
 
 
 class User(AbstractUser):
-    '''
-    Класс User вместо стандартного.
-    '''
+    '''Класс User вместо стандартного.'''
+
     first_name = models.CharField(
         max_length=150,
         verbose_name='Имя',
@@ -35,6 +34,8 @@ class User(AbstractUser):
 
 
 class SubscribeUser(models.Model):
+    '''Класс для отображения подписок пользователя.'''
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
