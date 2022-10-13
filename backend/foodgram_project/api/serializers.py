@@ -17,9 +17,6 @@ User = get_user_model()
 
 
 class IngredientSerializer(serializers.ModelSerializer):
-    '''
-    Класс IngredientSerializer для модели Ingredient.
-    '''
     measurement_unit = serializers.SlugRelatedField(
         slug_field='name',
         queryset=MeasurementUnit.objects.all(),
@@ -35,9 +32,6 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class IngredientForRecipeSerializer(serializers.ModelSerializer):
-    '''
-    Класс IngredientForRecipeSerializer.
-    '''
     id = serializers.IntegerField(source='ingredient.id')
     name = serializers.CharField(source='ingredient.name')
     measurement_unit = serializers.CharField(
@@ -55,9 +49,6 @@ class IngredientForRecipeSerializer(serializers.ModelSerializer):
 
 
 class TagSerializer(serializers.ModelSerializer):
-    '''
-    Класс TagSerializer для модели Tag.
-    '''
     class Meta:
         model = Tag
         fields = (
@@ -69,9 +60,6 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class GetTokenSerializer(serializers.Serializer):
-    '''
-    Класс GetTokenSerializer для получения токена.
-    '''
     email = serializers.CharField()
     password = serializers.CharField()
 
@@ -81,9 +69,6 @@ class GetTokenSerializer(serializers.Serializer):
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
-    '''
-    Класс UserCreateSerializer для регистрации пользователя модели User.
-    '''
     password = serializers.CharField(
         max_length=150,
         write_only=True,
@@ -126,9 +111,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    '''
-    Класс UserSerializer для модели User.
-    '''
     is_subscribed = serializers.SerializerMethodField(
         method_name='get_is_subscribed'
     )
@@ -154,9 +136,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserChangePasswordSerializer(serializers.Serializer):
-    '''
-    Класс UserChangePasswordSerializer для смены пароля модели User.
-    '''
     current_password = serializers.CharField()
     new_password = serializers.CharField(max_length=150)
 
@@ -177,9 +156,6 @@ class UserChangePasswordSerializer(serializers.Serializer):
 
 
 class ResipeSerializer(serializers.ModelSerializer):
-    '''
-    Класс ResipeSerializer для модели Recipe.
-    '''
     tags = TagSerializer(required=True, many=True)
     author = UserSerializer()
     ingredients = IngredientForRecipeSerializer(
@@ -230,9 +206,6 @@ class ResipeSerializer(serializers.ModelSerializer):
 
 
 class AmountSerialazer(serializers.Serializer):
-    '''
-    Класс AmountSerialazer.
-    '''
     id = serializers.SlugRelatedField(
         slug_field='id',
         queryset=Ingredient.objects.all(),
@@ -249,9 +222,6 @@ class AmountSerialazer(serializers.Serializer):
 
 
 class ResipeEditSerializer(serializers.ModelSerializer):
-    '''
-    Класс ResipeEditSerializer.
-    '''
     ingredients = AmountSerialazer(many=True, required=True)
     tags = serializers.SlugRelatedField(
         slug_field='id',
@@ -356,9 +326,6 @@ class ResipeEditSerializer(serializers.ModelSerializer):
 
 class ResipeShortListSerializer(serializers.ListSerializer):
     def to_representation(self, data):
-        """
-        List of object instances -> List of dicts of primitive datatypes.
-        """
         request = self.context.get('request', None)
         recipes_limit = None
         if request:
