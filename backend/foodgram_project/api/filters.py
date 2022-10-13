@@ -3,9 +3,8 @@ from tags.models import Tag
 
 
 class IngredientFilter(FilterSet):
-    '''
-    Класс IngredientFilter.
-    '''
+    '''Фильтр ингредиентов.'''
+
     name = rest_framework.CharFilter(
         field_name='name',
         lookup_expr='istartswith'
@@ -13,9 +12,8 @@ class IngredientFilter(FilterSet):
 
 
 class RecipeFilter(FilterSet):
-    '''
-    Класс RecipeFilter.
-    '''
+    '''Фильтр рецептов.'''
+
     author = rest_framework.CharFilter(
         field_name='author__id',
     )
@@ -31,11 +29,9 @@ class RecipeFilter(FilterSet):
         to_field_name='slug',
     )
 
-    def get_favorited_filter(self, queryset, name, value):
-        '''
-        Возвращает отфильтрованный queryset модели Recipe,
-        элементы которых есть в UserFavoriteRecipe.
-        '''
+    def get_favorited_filter(self, queryset, value):
+        '''Возвращает отфильтрованный queryset модели Recipe,
+        элементы которых есть в UserFavoriteRecipe.'''
         user = getattr(self.request, 'user', None)
         if user and user.is_authenticated:
             if value == '1':
@@ -44,11 +40,9 @@ class RecipeFilter(FilterSet):
                 return queryset.exclude(in_favorite__user=user)
         return queryset
 
-    def get_in_shopping_cart_filter(self, queryset, name, value):
-        '''
-        Возвращает отфильтрованный queryset модели Recipe,
-        элементы которых есть в UserShoppingCart.
-        '''
+    def get_in_shopping_cart_filter(self, queryset, value):
+        '''Возвращает отфильтрованный queryset модели Recipe,
+        элементы которых есть в UserShoppingCart.'''
         user = getattr(self.request, 'user', None)
         if user and user.is_authenticated:
             if value == '1':
