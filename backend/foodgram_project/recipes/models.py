@@ -9,9 +9,8 @@ User = get_user_model()
 
 
 class Recipe(models.Model):
-    '''
-    Класс Recipe для описания рецептов.
-    '''
+    '''Класс для описания рецептов.'''
+
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -62,14 +61,10 @@ class Recipe(models.Model):
     def __str__(self) -> str:
         return f'Рецепт: {self.name}'
 
-    def __repr__(self) -> str:
-        return f'Рецепт: {self.name}'
-
 
 class RecipeTag(models.Model):
-    '''
-    Класс Recipe_Tag.
-    '''
+    '''Класс для описания тего.'''
+
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -97,14 +92,10 @@ class RecipeTag(models.Model):
     def __str__(self) -> str:
         return f'{self.recipe}, {self.tag}'
 
-    def __repr__(self) -> str:
-        return f'{self.recipe}, {self.tag}'
-
 
 class RecipeIngredientAmount(models.Model):
-    '''
-    Класс RecipeIngredientAmount.
-    '''
+    '''Класс для количества ингредиентов.'''
+
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -141,14 +132,10 @@ class RecipeIngredientAmount(models.Model):
     def __str__(self) -> str:
         return f'{self.recipe}, {self.ingredient}'
 
-    def __repr__(self) -> str:
-        return f'{self.recipe}, {self.ingredient}'
-
 
 class UserFavoriteRecipe(models.Model):
-    '''
-    Класс UserFavoriteRecipe.
-    '''
+    '''Класс для избранных рецептов.'''
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -180,9 +167,8 @@ class UserFavoriteRecipe(models.Model):
 
 
 class UserShoppingCart(models.Model):
-    '''
-    Класс UserShoppingCart.
-    '''
+    '''Класс для списка покупок.'''
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

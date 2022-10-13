@@ -8,14 +8,9 @@ from ingredients.models import Ingredient, MeasurementUnit
 
 class Command(BaseCommand):
     help = 'Копирование данных из csv'
-    # shift_path = os.path.dirname(BASE_DIR)
-    # shift_path = os.path.dirname(shift_path)
     shift_path = os.path.join(BASE_DIR, 'start_data')
 
     def handle(self, *args, **kwargs):
-        '''
-        Основная функция выполнения команды.
-        '''
         print(self.shift_path)
         filename = os.path.join(self.shift_path, 'ingredients.csv')
         with open(filename, 'r', encoding='utf-8') as f:

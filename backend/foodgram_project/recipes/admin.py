@@ -4,25 +4,22 @@ from recipes.models import (Recipe, RecipeIngredientAmount, RecipeTag,
 
 
 class TagInline(admin.TabularInline):
-    '''
-    Класс TagInline.
-    '''
+    '''Класс TagInline.'''
+
     model = RecipeTag
     extra = 3
 
 
 class IngredientInline(admin.TabularInline):
-    '''
-    Класс IngredientInline.
-    '''
+    '''Класс IngredientInline.'''
+
     model = RecipeIngredientAmount
     extra = 3
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    '''
-    Класс RecipeAdmin.
-    '''
+    '''Класс RecipeAdmin.'''
+
     inlines = (
         TagInline,
         IngredientInline,
@@ -46,9 +43,8 @@ class RecipeAdmin(admin.ModelAdmin):
 
 
 class RecipeTagAdmin(admin.ModelAdmin):
-    '''
-    Класс RecipeTagAdmin.
-    '''
+    '''Класс RecipeTagAdmin.'''
+
     list_display = (
         'pk',
         'recipe',
@@ -62,9 +58,8 @@ class RecipeTagAdmin(admin.ModelAdmin):
 
 
 class RecipeIngredientAmountAdmin(admin.ModelAdmin):
-    '''
-    RecipeIngredientAmountAdmin.
-    '''
+    '''RecipeIngredientAmountAdmin.'''
+
     list_display = (
         'pk',
         'recipe',
@@ -85,9 +80,8 @@ class RecipeIngredientAmountAdmin(admin.ModelAdmin):
 
 
 class UserFavoriteRecipeAdmin(admin.ModelAdmin):
-    '''
-    Класс UserFavoriteRecipeAdmin.
-    '''
+    '''Класс UserFavoriteRecipeAdmin.'''
+
     list_display = (
         'pk',
         'user',
@@ -105,9 +99,8 @@ class UserFavoriteRecipeAdmin(admin.ModelAdmin):
 
 
 class UserShoppingCartAdmin(admin.ModelAdmin):
-    '''
-    Класс UserShoppingCartAdmin.
-    '''
+    '''Класс UserShoppingCartAdmin.'''
+
     list_display = (
         'pk',
         'user',

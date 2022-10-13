@@ -2,9 +2,8 @@ from django.db import models
 
 
 class MeasurementUnit(models.Model):
-    '''
-    Класс для размерностей игридиентов.
-    '''
+    '''Размерность игридиентов.'''
+
     name = models.CharField(
         max_length=200,
         verbose_name='Название',
@@ -20,14 +19,10 @@ class MeasurementUnit(models.Model):
     def __str__(self):
         return f'Размерность: {self.name}'
 
-    def __repr__(self):
-        return f'Размерность: {self.name}'
-
 
 class Ingredient(models.Model):
-    '''
-    Модель для ингридиентов.
-    '''
+    '''Модель для ингридиентов.'''
+
     name = models.CharField(
         max_length=200,
         verbose_name='Название',
@@ -49,7 +44,4 @@ class Ingredient(models.Model):
         ordering = ('name',)
 
     def __str__(self) -> str:
-        return f'Ингридиент: {self.name}'
-
-    def __repr__(self) -> str:
         return f'Ингридиент: {self.name}'
