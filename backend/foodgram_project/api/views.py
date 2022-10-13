@@ -30,12 +30,13 @@ User = get_user_model()
 
 @decorators.api_view(('POST',))
 def get_token(request):
+    '''Получение токена.'''
     serializer = GetTokenSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     email = serializer.validated_data.get('email')
     password = serializer.validated_data.get('password')
     user = get_object_or_404(User, email=email)
-    if (user.check_password(password)):
+    if user.check_password(password):
         token, created = Token.objects.get_or_create(user=user)
         return Response(
             {'auth_token': token.key},
@@ -46,6 +47,7 @@ def get_token(request):
 
 @decorators.api_view(('POST',))
 def drop_token(request):
+    '''Удаление токена.'''
     user: User = request.user
     if user.is_authenticated:
         token = get_object_or_404(Token, user=user)
@@ -58,9 +60,8 @@ def drop_token(request):
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
-    '''
-    Класс IngredientViewSet для модели Ingredient.
-    '''
+    '''ViewSet для модели Ingredient.'''
+
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     filter_backends = (
@@ -71,9 +72,8 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
-    '''
-    Класс TagViewSet для модели Tag.
-    '''
+    '''ViewSet для модели Tag.'''
+
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     pagination_class = None
@@ -85,9 +85,8 @@ class UserViewSet(
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin
 ):
-    '''
-    Класс UserViewSet для модели User.
-    '''
+    '''ViewSet для модели User.'''
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
     pagination_class = PageNumberCustomPaginator
@@ -141,9 +140,6 @@ class UserViewSet(
         url_name='subscribe'
     )
     def manage_subscribe(self, request, *args, **kwargs):
-        '''
-        Управление подписками.
-        '''
         user = request.user
         author_id = kwargs.get('pk', 0)
 
@@ -212,9 +208,8 @@ class UserViewSet(
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
-    '''
-    Класс RecipeViewSet для модели Recipes.
-    '''
+    '''ViewSet для модели Recipes.'''
+
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes = (AuthorOrReadOnly,)
@@ -258,9 +253,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
         url_name='favorite',
     )
     def manage_favorite(self, request, *args, **kwargs):
-        '''
-        Управление списком избранного.
-        '''
         user = request.user
         recipe_id = kwargs.get('pk', 0)
 
