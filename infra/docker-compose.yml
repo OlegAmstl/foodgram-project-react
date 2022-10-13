@@ -8,7 +8,7 @@ services:
       - ./.env
 
   web:
-    image: amstl/food:latest
+    image: food2:latest
     restart: always
     volumes:
       - static_value:/app/static/

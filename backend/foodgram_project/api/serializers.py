@@ -155,7 +155,7 @@ class UserChangePasswordSerializer(serializers.Serializer):
         return value
 
 
-class ResipeSerializer(serializers.ModelSerializer):
+class RecipeSerializer(serializers.ModelSerializer):
     tags = TagSerializer(required=True, many=True)
     author = UserSerializer()
     ingredients = IngredientForRecipeSerializer(
@@ -205,7 +205,7 @@ class ResipeSerializer(serializers.ModelSerializer):
                 ).exists())
 
 
-class AmountSerialazer(serializers.Serializer):
+class AmountSerializer(serializers.Serializer):
     id = serializers.SlugRelatedField(
         slug_field='id',
         queryset=Ingredient.objects.all(),
@@ -221,8 +221,8 @@ class AmountSerialazer(serializers.Serializer):
         )
 
 
-class ResipeEditSerializer(serializers.ModelSerializer):
-    ingredients = AmountSerialazer(many=True, required=True)
+class RecipeEditSerializer(serializers.ModelSerializer):
+    ingredients = AmountSerializer(many=True, required=True)
     tags = serializers.SlugRelatedField(
         slug_field='id',
         queryset=Tag.objects.all(),
@@ -324,7 +324,7 @@ class ResipeEditSerializer(serializers.ModelSerializer):
         return recipe
 
 
-class ResipeShortListSerializer(serializers.ListSerializer):
+class RecipeShortListSerializer(serializers.ListSerializer):
     def to_representation(self, data):
         request = self.context.get('request', None)
         recipes_limit = None
@@ -345,7 +345,7 @@ class ResipeShortListSerializer(serializers.ListSerializer):
         ]
 
 
-class ResipeShortSerializer(serializers.ModelSerializer):
+class RecipeShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = (
@@ -354,14 +354,14 @@ class ResipeShortSerializer(serializers.ModelSerializer):
             'image',
             'cooking_time'
         )
-        list_serializer_class = ResipeShortListSerializer
+        list_serializer_class = RecipeShortListSerializer
 
 
 class UserSubscribeSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField(
         method_name='get_is_subscribed'
     )
-    recipes = ResipeShortSerializer(many=True)
+    recipes = RecipeShortSerializer(many=True)
     recipes_count = serializers.SerializerMethodField(
         method_name='get_recipes_count'
     )

@@ -14,8 +14,8 @@ from api.filters import IngredientFilter, RecipeFilter
 from api.paginators import PageNumberCustomPaginator
 from api.permissions import AuthorOrReadOnly
 from api.serializers import (GetTokenSerializer, IngredientSerializer,
-                             ResipeEditSerializer, ResipeSerializer,
-                             ResipeShortSerializer, TagSerializer,
+                             RecipeEditSerializer, RecipeSerializer,
+                             RecipeShortSerializer, TagSerializer,
                              UserChangePasswordSerializer,
                              UserCreateSerializer, UserSerializer,
                              UserSubscribeSerializer)
@@ -216,7 +216,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     Класс RecipeViewSet для модели Recipes.
     '''
     queryset = Recipe.objects.all()
-    serializer_class = ResipeSerializer
+    serializer_class = RecipeSerializer
     permission_classes = (AuthorOrReadOnly,)
     filter_backends = (
         DjangoFilterBackend,
@@ -225,13 +225,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
     pagination_class = PageNumberCustomPaginator
 
     def create(self, request, *args, **kwargs):
-        serializer = ResipeEditSerializer(
+        serializer = RecipeEditSerializer(
             data=request.data,
             context={'user': request.user}
         )
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        output_serializer = ResipeSerializer(
+        output_serializer = RecipeSerializer(
             serializer.instance, context={'request': request})
         return Response(
             output_serializer.data,
@@ -240,12 +240,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = ResipeEditSerializer(
+        serializer = RecipeEditSerializer(
             instance, data=request.data, partial=True
         )
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        output_serializer = ResipeSerializer(serializer.instance)
+        output_serializer = RecipeSerializer(serializer.instance)
         return Response(
             output_serializer.data,
             status=status.HTTP_200_OK,)
@@ -280,7 +280,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         if request.method == 'POST':
             obj, created = UserFavoriteRecipe.objects.get_or_create(**params)
             if created:
-                serializer = ResipeShortSerializer(
+                serializer = RecipeShortSerializer(
                     instance=recipe, context={'request': request})
                 return Response(
                     serializer.data,
@@ -331,7 +331,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         if request.method == 'POST':
             obj, created = UserShoppingCart.objects.get_or_create(**params)
             if created:
-                serializer = ResipeShortSerializer(
+                serializer = RecipeShortSerializer(
                     instance=recipe, context={'request': request})
                 return Response(
                     serializer.data,
