@@ -5,7 +5,6 @@ import tempfile
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
-
 from ingredients.models import Ingredient, MeasurementUnit
 from recipes.models import (Recipe, RecipeIngredientAmount, RecipeTag,
                             UserFavoriteRecipe)

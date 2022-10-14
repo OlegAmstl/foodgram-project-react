@@ -2,7 +2,6 @@ import csv
 import os
 
 from django.core.management.base import BaseCommand
-
 from foodgram_project.settings import BASE_DIR
 from tags.models import Tag
 
