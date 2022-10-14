@@ -168,7 +168,7 @@ class RecipeModelsTest(TestCase):
                     )
                 )
 
-    def test_recipes_models_recipe_ingredients_amount_have_correct_fields(self):
+    def test_models_recipe_ingredients_amount_have_correct_fields(self):
         recipe_ingred = RecipeModelsTest.recipe_ingredient_amount
 
         field_verboses = {

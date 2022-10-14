@@ -6,9 +6,8 @@ from rest_framework.test import APIClient, APITestCase
 User = get_user_model()
 
 
-class CustumAuthTest(APITestCase):
+class CustomAuthTest(APITestCase):
     '''Тестируем /api/auth/token/.'''
-    
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -27,9 +26,9 @@ class CustumAuthTest(APITestCase):
         self.auth_client = APIClient()
 
     def test_api_custom_auth_01_get_token_valid_data(self):
-        user = CustumAuthTest.user
-        url = CustumAuthTest.url + 'login/'
-        user_data = CustumAuthTest.USER_DATA
+        user = CustomAuthTest.user
+        url = CustomAuthTest.url + 'login/'
+        user_data = CustomAuthTest.USER_DATA
         valid_data = {
             'password': user_data['password'],
             'email': user_data['email'],
@@ -72,8 +71,8 @@ class CustumAuthTest(APITestCase):
         )
 
     def test_api_custom_auth_02_get_token_invalid_data(self):
-        url = CustumAuthTest.url + 'login/'
-        user_data = CustumAuthTest.USER_DATA
+        url = CustomAuthTest.url + 'login/'
+        user_data = CustomAuthTest.USER_DATA
         invalid_data = [
             {
                 'password_': user_data['password'],
@@ -123,8 +122,8 @@ class CustumAuthTest(APITestCase):
                 )
 
     def test_api_custom_auth_03_drop_token_valid_data(self):
-        user = CustumAuthTest.user
-        url = CustumAuthTest.url + 'logout/'
+        user = CustomAuthTest.user
+        url = CustomAuthTest.url + 'logout/'
         token = Token.objects.create(user=user)
 
         self.assertEqual(
@@ -142,8 +141,8 @@ class CustumAuthTest(APITestCase):
         )
 
     def test_api_custom_auth_04_drop_token_invalid_data(self):
-        user = CustumAuthTest.user
-        url = CustumAuthTest.url + 'logout/'
+        user = CustomAuthTest.user
+        url = CustomAuthTest.url + 'logout/'
         Token.objects.create(user=user)
 
         resp = self.client.post(url)

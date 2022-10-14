@@ -119,7 +119,7 @@ class IngredientModelsTest(TestCase):
                     ingred._meta.get_field(field).verbose_name,
                     expected_value, (
                         'Тест не пройден, '
-                        f'{ingrid._meta.get_field(field).verbose_name} '
+                        f'{ingred._meta.get_field(field).verbose_name} '
                         f'вместо {expected_value}'
                     )
                 )
@@ -137,7 +137,7 @@ class IngredientModelsTest(TestCase):
                     expected_value,
                     (
                         'Тест не пройден, '
-                        f'{ingrid._meta.get_field(field).help_text} '
+                        f'{ingred._meta.get_field(field).help_text} '
                         f'вместо {expected_value}'
                     )
                 )
@@ -154,7 +154,7 @@ class IngredientModelsTest(TestCase):
                     expected_value,
                     (
                         'Тест не пройден, '
-                        f'{ingrid._meta.get_field(field).max_length} '
+                        f'{ingred._meta.get_field(field).max_length} '
                         f'вместо {expected_value}'
                     )
                 )
@@ -171,7 +171,7 @@ class IngredientModelsTest(TestCase):
                     expected_value,
                     (
                         'Тест не пройден, '
-                        f'{ingrid._meta.get_field(field).db_index} '
+                        f'{ingred._meta.get_field(field).db_index} '
                         f'вместо {expected_value}'
                     )
                 )
