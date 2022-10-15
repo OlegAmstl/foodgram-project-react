@@ -55,8 +55,10 @@ jobs:
          key: ${{ secrets.SSH_KEY }}
          passphrase: ${{ secrets.PASSPHRASE }}
          script: |
+           sudo 
            sudo docker-compose down
            sudo docker image rm amstl/food2:latest
+           sudo ls
            touch .env
            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
