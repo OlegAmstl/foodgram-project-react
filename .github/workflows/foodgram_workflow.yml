@@ -67,7 +67,6 @@ jobs:
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
             echo ALLOWED_HOST=${{ secrets.HOST }} >> .env
-            
             sudo chmod 666 /var/run/docker.sock
             sudo docker-compose up -d
             sudo docker-compose exec -T web python manage.py migrate
