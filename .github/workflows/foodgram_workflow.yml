@@ -3,10 +3,9 @@ name: CI
 on: [push]
 
 jobs:
-
- tests_PEP8:
-   runs-on: ubuntu-latest
-   steps:
+  tests_PEP8:
+    runs-on: ubuntu-latest
+    steps:
      - uses: actions/checkout@v2
      - name: Set up Python
        uses: actions/setup-python@v2
@@ -22,11 +21,11 @@ jobs:
          cd backend/foodgram_project/
          python -m flake8
 
- build_and_push_to_docker_hub:
-   name: Push Docker image to Docker Hub
-   runs-on: ubuntu-latest
-   needs: tests_PEP8
-   steps:
+  build_and_push_to_docker_hub:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    needs: tests_PEP8
+    steps:
      - name: Check out the repo
        uses: actions/checkout@v2
      - name: Set up Docker Buildx
