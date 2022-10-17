@@ -66,3 +66,5 @@ jobs:
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             sudo chmod 666 /var/run/docker.sock
             sudo docker-compose up -d
+            sudo docker-compose exec -T web python manage.py migrate
+            sudo docker-compose exec web python manage.py createsuperuser
