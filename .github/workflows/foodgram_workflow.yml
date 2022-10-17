@@ -72,6 +72,8 @@ jobs:
             echo ALLOWED_HOST=${{ secrets.HOST }} >> .env
             sudo chmod 666 /var/run/docker.sock
             sudo docker-compose up -d
-            sudo docker-compose exec -T web python manage.py migrate
+            sudo docker-compose exec web python manage.py migrate
             sudo docker-compose exec web python manage.py collectstatic --no-input 
             sudo docker-compose exec web python manage.py createsuperuser
+            sudo docker-compose exec web python manage.py add_tags_from_data
+            sudo docker-compose exec web python manage.py add_ingidients_from_data
