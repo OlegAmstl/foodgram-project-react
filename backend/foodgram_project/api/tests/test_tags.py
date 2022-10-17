@@ -4,10 +4,14 @@ from tags.models import Tag
 
 
 class TagsTests(APITestCase):
-    '''Тестируем /api/tags/.'''
-
+    '''
+    Тестируем /api/tags/.
+    '''
     @classmethod
     def setUpClass(cls):
+        '''
+        Создаём 5 экземпляров модели Tag.
+        '''
         super().setUpClass()
         cls.tag1 = Tag.objects.create(
             name='Tag_1', slug='Tag_1', color='#111111')
@@ -17,9 +21,15 @@ class TagsTests(APITestCase):
             name='Tag_3', slug='Tag_3', color='#111113')
 
     def setUp(self):
+        '''
+        Создадим гостевой клиент для каждого теста.
+        '''
         self.client = APIClient()
 
     def test_api_tags_01_url_list(self):
+        '''
+        Проверяем /api/tags/ доступность всего списка.
+        '''
         url = '/api/tags/'
         resp = self.client.get(url)
         self.assertEqual(
@@ -27,6 +37,9 @@ class TagsTests(APITestCase):
         )
 
     def test_api_tags_02_url_retrieve(self):
+        '''
+        Проверяем /api/tags/ доступность одного элемента.
+        '''
         tag = TagsTests.tag1
         url = f'/api/tags/{tag.id}/'
         resp = self.client.get(url)
@@ -35,12 +48,15 @@ class TagsTests(APITestCase):
         )
 
     def test_api_tags_04_retrieve_correct_fields(self):
+        '''
+        Проверяем /api/tags/{id}/ корректность получаемых данных.
+        '''
         tag = TagsTests.tag1
         url = f'/api/tags/{tag.id}/'
 
         resp = self.client.get(url)
         try:
-            resp_data = resp.json()
+            resp_data: dict = resp.json()
         except Exception as err:
             self.assertTrue(
                 True,
@@ -65,6 +81,9 @@ class TagsTests(APITestCase):
                 )
 
     def test_api_tags_05_list_correct(self):
+        '''
+        Проверяем /api/tags/ корректность получаемых данных.
+        '''
         url = '/api/tags/'
         resp = self.client.get(url)
         try:

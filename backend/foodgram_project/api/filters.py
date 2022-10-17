@@ -3,7 +3,7 @@ from tags.models import Tag
 
 
 class IngredientFilter(FilterSet):
-    '''Фильтр ингредиентов.'''
+    '''Класс IngredientFilter.'''
 
     name = rest_framework.CharFilter(
         field_name='name',
@@ -12,7 +12,7 @@ class IngredientFilter(FilterSet):
 
 
 class RecipeFilter(FilterSet):
-    '''Фильтр рецептов.'''
+    '''Класс RecipeFilter.'''
 
     author = rest_framework.CharFilter(
         field_name='author__id',
@@ -29,7 +29,7 @@ class RecipeFilter(FilterSet):
         to_field_name='slug',
     )
 
-    def get_favorited_filter(self, queryset, value):
+    def get_favorited_filter(self, queryset, name, value):
         '''Возвращает отфильтрованный queryset модели Recipe,
         элементы которых есть в UserFavoriteRecipe.'''
         user = getattr(self.request, 'user', None)
@@ -40,7 +40,7 @@ class RecipeFilter(FilterSet):
                 return queryset.exclude(in_favorite__user=user)
         return queryset
 
-    def get_in_shopping_cart_filter(self, queryset, value):
+    def get_in_shopping_cart_filter(self, queryset, name, value):
         '''Возвращает отфильтрованный queryset модели Recipe,
         элементы которых есть в UserShoppingCart.'''
         user = getattr(self.request, 'user', None)

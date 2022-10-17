@@ -5,6 +5,7 @@ import tempfile
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
+
 from ingredients.models import Ingredient, MeasurementUnit
 from recipes.models import (Recipe, RecipeIngredientAmount, RecipeTag,
                             UserFavoriteRecipe)
@@ -17,19 +18,23 @@ TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 User = get_user_model()
 
 
-def add_num_to_value(dictionary, value):
+def add_num_to_value(d: dict, value: int):
     res = {}
-    for key, val in dictionary.items():
+    for key, val in d.items():
         res[key] = val + str(value)
     return res
 
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class FavoriteTest(APITestCase):
-    '''Тестируем модель /api/recipes/{id}/favorite/.'''
-
+    '''
+    Тестируем модель /api/recipes/{id}/favorite/.
+    '''
     @classmethod
     def setUpClass(cls):
+        '''
+        Создаём фикстуры.
+        '''
         super().setUpClass()
 
         cls.USER_DATA = {
@@ -82,7 +87,7 @@ class FavoriteTest(APITestCase):
         )
         cls.small_gif_base64 = base64.b64encode(cls.small_gif)
 
-        cls.recipe = Recipe.objects.create(
+        cls.recipe: Recipe = Recipe.objects.create(
             author=cls.author, name='Тест Рецепт', text='Много текста',
             cooking_time=42, image=cls.uploaded
         )
@@ -116,10 +121,16 @@ class FavoriteTest(APITestCase):
 
     @classmethod
     def tearDownClass(cls):
+        '''
+        Удаляем лишнее по завершении тестов.
+        '''
         super().tearDownClass()
         shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def setUp(self):
+        '''
+        Создадим клиенты для каждого теста.
+        '''
         self.client = APIClient()
 
         self.auth_client1 = APIClient()
@@ -135,6 +146,9 @@ class FavoriteTest(APITestCase):
             HTTP_AUTHORIZATION='Token ' + FavoriteTest.token_author.key)
 
     def test_api_recipes_favorite(self):
+        '''
+        Тестируем рецепта в избранное.
+        '''
         url = '/api/recipes/?is_favorited=1'
         resp = self.auth_client1.get(url)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
@@ -154,7 +168,7 @@ class FavoriteTest(APITestCase):
             UserFavoriteRecipe.objects.count(), count_favorite + 1)
 
         try:
-            resp_data = resp.json()
+            resp_data: dict = resp.json()
         except Exception as err:
             self.assertTrue(
                 True,

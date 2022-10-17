@@ -5,9 +5,8 @@ User = get_user_model()
 
 
 class AuthorOrReadOnly(permissions.IsAuthenticatedOrReadOnly):
-    '''Ограничения для пользователей не являющимися автором.'''
 
-    def has_object_permission(self, request, obj):
+    def has_object_permission(self, request, view, obj):
         user: User = request.user
         return (
             request.method == 'GET'

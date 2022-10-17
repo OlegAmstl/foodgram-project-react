@@ -7,18 +7,22 @@ from users.models import SubscribeUser
 User = get_user_model()
 
 
-def add_num_to_value(dictionary, value: int):
+def add_num_to_value(d: dict, value: int):
     res = {}
-    for key, val in dictionary.items():
+    for key, val in d.items():
         res[key] = val + str(value)
     return res
 
 
 class UsersTests(APITestCase):
-    '''Тестируем /api/users/.'''
-
+    '''
+    Тестируем /api/users/.
+    '''
     @classmethod
     def setUpClass(cls):
+        '''
+        Создаём 3 экземпляров модели User.
+        '''
         super().setUpClass()
         cls.USER_DATA = {
             'first_name': 'Тест',
@@ -44,6 +48,9 @@ class UsersTests(APITestCase):
         cls.url = '/api/users/'
 
     def setUp(self):
+        '''
+        Создадим клиенты для каждого теста.
+        '''
         self.client = APIClient()
 
         self.auth_client1 = APIClient()
@@ -59,6 +66,9 @@ class UsersTests(APITestCase):
             HTTP_AUTHORIZATION='Token ' + UsersTests.token_author.key)
 
     def test_api_users_01_url_list_and_retrieve_ok(self):
+        '''
+        Проверяем доступность общедоступных url.
+        '''
         urls = [
             UsersTests.url,
             UsersTests.url + f'{UsersTests.user1.id}/',
@@ -75,6 +85,9 @@ class UsersTests(APITestCase):
                 )
 
     def test_api_users_02_url_not_auth(self):
+        '''
+        Проверяем недоступность необщедоступных url.
+        '''
         urls = [
             UsersTests.url + 'me/',
         ]
@@ -88,6 +101,9 @@ class UsersTests(APITestCase):
                 )
 
     def test_api_users_03_url_not_found(self):
+        '''
+        Проверяем недоступность необщедоступных url.
+        '''
         urls = [
             UsersTests.url + '4/',
         ]
@@ -101,11 +117,14 @@ class UsersTests(APITestCase):
                 )
 
     def test_api_users_04_url_test_retrieve(self):
-        user = UsersTests.user2
+        '''
+        Тестируем '/api/users/{id}/.
+        '''
+        user: User = UsersTests.user2
         url = UsersTests.url + f'{user.id}/'
         resp = self.client.get(url)
         try:
-            resp_data = resp.json()
+            resp_data: dict = resp.json()
         except Exception as err:
             self.assertTrue(
                 True,
@@ -135,6 +154,9 @@ class UsersTests(APITestCase):
                 )
 
     def test_api_users_05_url_test_list(self):
+        '''
+        Тестируем '/api/users/.
+        '''
         url = UsersTests.url
         resp = self.client.get(url)
         try:
@@ -215,6 +237,9 @@ class UsersTests(APITestCase):
                     )
 
     def test_api_users_06_url_test_create_valid(self):
+        '''
+        Тестируем /api/users/ создание пользователей.
+        '''
         user_data = {
             'first_name': 'Тест',
             'last_name': 'Тестович',
@@ -286,6 +311,9 @@ class UsersTests(APITestCase):
                 self.assertIn(field, resp_data)
 
     def test_api_users_08_url_test_is_subscribed(self):
+        '''
+        Проверяем коррестоность работы поля is_subscribed.
+        '''
         url = UsersTests.url
 
         user_data = {
@@ -324,6 +352,9 @@ class UsersTests(APITestCase):
                     resp.json().get('is_subscribed'), value)
 
     def test_api_users_09_url_test_me(self):
+        '''
+        Проверяем работу /api/users/me.
+        '''
         url = UsersTests.url + 'me/'
         resp = self.client.get(url)
         self.assertEqual(
@@ -366,6 +397,9 @@ class UsersTests(APITestCase):
                 )
 
     def test_api_users_10_url_test_set_password(self):
+        '''
+        Тестируем смену пароля для /api/users/set_password/.
+        '''
         url = UsersTests.url + 'set_password/'
 
         valid_data = {
