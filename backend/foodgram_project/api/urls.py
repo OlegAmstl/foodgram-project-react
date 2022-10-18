@@ -1,7 +1,6 @@
 from api.views import (IngredientViewSet, RecipeViewSet, TagViewSet,
                        UserViewSet, drop_token, get_token)
 from django.urls import include, path
-from django.views.generic import TemplateView
 from rest_framework.routers import DefaultRouter
 
 app_name = 'api'
