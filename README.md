@@ -1,6 +1,4 @@
-<!--START_SECTION:badges-->
-
-<!--END_SECTION:badges-->
+![Status workflow](![example event parameter](https://github.com/OlegAmstl/foodgram-project-react/blob/master/.github/workflows/foodgram_workflow.yml/badge.svg?event=push))
 
 ### Проект Foodgram
 
@@ -77,3 +75,55 @@ sudo docker-compose exec web python manage.py collectstatic --no-input
 sudo docker-compose exec web python manage.py add_tags_from_data
 sudo docker-compose exec web python manage.py add_ingidients_from_data
 ```
+
+### IP проекта:
+#### Вход в панель администратора
+```
+158.160.4.20/admin/
+```
+
+### Работа с API
+- запросы к API начинаются с ```/api/```
+- в проекте доступно OpenAPI specification в формате ReDoc: ```http://<ваш IP>/api/docs/```.
+
+# ###Пример api запроса
+```
+GET запрос /api/recipes/{id}/
+Ответ
+{
+  "id": 0,
+  "tags": [
+    {
+      "id": 0,
+      "name": "Завтрак",
+      "color": "#E26C2D",
+      "slug": "breakfast"
+    }
+  ],
+  "author": {
+    "email": "user@example.com",
+    "id": 0,
+    "username": "string",
+    "first_name": "Вася",
+    "last_name": "Пупкин",
+    "is_subscribed": false
+  },
+  "ingredients": [
+    {
+      "id": 0,
+      "name": "Картофель отварной",
+      "measurement_unit": "г",
+      "amount": 1
+    }
+  ],
+  "is_favorited": true,
+  "is_in_shopping_cart": true,
+  "name": "string",
+  "image": "http://foodgram.example.org/media/recipes/images/image.jpeg",
+  "text": "string",
+  "cooking_time": 1
+}
+```
+### Автор проекта:
+
+Олег Маркин
