@@ -17,9 +17,4 @@ urlpatterns = [
     path('', include(router.urls)),
     path('auth/token/login/', get_token, name='GetToken'),
     path('auth/token/logout/', drop_token, name='DropToken'),
-    path(
-        'redoc/',
-        TemplateView.as_view(template_name='redoc.html'),
-        name='redoc'
-    ),
 ]
