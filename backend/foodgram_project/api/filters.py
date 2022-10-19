@@ -1,4 +1,5 @@
 from django_filters import FilterSet, rest_framework
+
 from tags.models import Tag
 
 

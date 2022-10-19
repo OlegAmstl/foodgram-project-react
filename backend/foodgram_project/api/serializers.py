@@ -4,11 +4,12 @@ from django.contrib.auth import get_user_model, password_validation
 from django.core import exceptions
 from django.db import transaction
 from drf_extra_fields.fields import Base64ImageField
+from rest_framework import serializers
+
 from foodgram_project.settings import PROJECT_SETTINGS
 from ingredients.models import Ingredient, MeasurementUnit
 from recipes.models import (Recipe, RecipeIngredientAmount, RecipeTag,
                             UserFavoriteRecipe, UserShoppingCart)
-from rest_framework import serializers
 from tags.models import Tag
 from users.models import SubscribeUser
 
