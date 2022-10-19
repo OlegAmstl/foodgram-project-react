@@ -334,7 +334,7 @@ class RecipeShortListSerializer(serializers.ListSerializer):
 
         try:
             recipes_limit = int(recipes_limit)
-        except (ValueError, TypeError) as err:
+        except (ValueError, TypeError):
             recipes_limit = None
 
         iterable = data.all()[:recipes_limit]
