@@ -31,7 +31,7 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class IngredientForRecipeSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source='ingredient.id')
+    id = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     name = serializers.CharField(source='ingredient.name')
     measurement_unit = serializers.CharField(
         source='ingredient.measurement_unit.name'
@@ -72,7 +72,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         max_length=150,
         write_only=True,
     )
-    id = serializers.IntegerField(read_only=True)
+    id = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = User
@@ -317,9 +317,11 @@ class RecipeEditSerializer(serializers.ModelSerializer):
         for data_value in ingredients:
             ingredient = data_value['id']
             amount = data_value['amount']
-            RecipeIngredientAmount.objects.create(
-                recipe=recipe, ingredient=ingredient, amount=amount
-            )
+            RecipeIngredientAmount.objects.bulk_create([
+                RecipeIngredientAmount(recipe=recipe),
+                RecipeIngredientAmount(ingredient=ingredient),
+                RecipeIngredientAmount(amount=amount)
+            ])
         return recipe
 
 
@@ -332,9 +334,7 @@ class RecipeShortListSerializer(serializers.ListSerializer):
 
         try:
             recipes_limit = int(recipes_limit)
-        except ValueError:
-            recipes_limit = None
-        except TypeError:
+        except (ValueError, TypeError) as err:
             recipes_limit = None
 
         iterable = data.all()[:recipes_limit]
