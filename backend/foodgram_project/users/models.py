@@ -32,6 +32,9 @@ class User(AbstractUser):
         verbose_name_plural = 'Пользователи'
         ordering = ('username',)
 
+    def __str__(self) -> str:
+        return f'{self.first_name} {self.last_name}'
+
 
 class SubscribeUser(models.Model):
     '''Класс для отображения подписок пользователя.'''
@@ -68,3 +71,6 @@ class SubscribeUser(models.Model):
                 name='user_is_not_author'
             ),
         )
+
+    def __str__(self) -> str:
+        return f'{self.user.username} подписан на {self.author.username}'
