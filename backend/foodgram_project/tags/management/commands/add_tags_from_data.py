@@ -11,7 +11,6 @@ class Command(BaseCommand):
     shift_path = os.path.join(BASE_DIR, 'start_data')
 
     def handle(self, *args, **kwargs):
-        print(self.shift_path)
         filename = os.path.join(self.shift_path, 'tags.csv')
         with open(filename, 'r', encoding='utf-8') as f:
             csv_reader = csv.reader(f, delimiter=',', quotechar='"')
@@ -22,5 +21,3 @@ class Command(BaseCommand):
                 tag = Tag.objects.create(
                     name=name, color=color, slug=slug
                 )
-                print(tag)
-        print('ADD', Tag.objects.count(), 'tags')
