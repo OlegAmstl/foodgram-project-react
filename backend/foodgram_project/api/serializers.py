@@ -339,10 +339,6 @@ class RecipeShortListSerializer(serializers.ListSerializer):
 
         try:
             recipes_limit = int(recipes_limit)
-        # except ValueError:
-        #     recipes_limit = None
-        # except TypeError:
-        #     recipes_limit = None
         except (ValueError, TypeError):
             recipes_limit = None
 
