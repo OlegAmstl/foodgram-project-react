@@ -11,7 +11,6 @@ class Command(BaseCommand):
     shift_path = os.path.join(BASE_DIR, 'start_data')
 
     def handle(self, *args, **kwargs):
-        print(self.shift_path)
         filename = os.path.join(self.shift_path, 'ingredients.csv')
         with open(filename, 'r', encoding='utf-8') as f:
             csv_reader = csv.reader(f, delimiter=',', quotechar='"')
@@ -24,6 +23,3 @@ class Command(BaseCommand):
                 Ingredient.objects.create(
                     name=ingrid_data, measurement_unit=unit
                 )
-
-        print('ADD', MeasurementUnit.objects.count(), 'MeasurementUnits')
-        print('ADD', Ingredient.objects.count(), 'Ingredients')
