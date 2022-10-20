@@ -8,8 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.getenv('SECRET_KEY', '123')
 
-# DEBUG = bool(int(os.getenv('DEBUG', '0')))
-DEBUG = False
+DEBUG = bool(int(os.getenv('DEBUG', '0')))
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', 'web']
 ALLOWED_HOSTS += [os.getenv('ALLOWED_HOST')]
