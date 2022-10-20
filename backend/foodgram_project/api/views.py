@@ -368,7 +368,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             ).values(
                 'ingredient__name',
                 'ingredient__measurement_unit__name'
-            ).annotate(total=models.Sum('amount'))
+            ).annotate(total=models.Sum('amount')).order_by('-total')
         )
         response = HttpResponse(content_type='text/csv')
         csv_writer = writer(
