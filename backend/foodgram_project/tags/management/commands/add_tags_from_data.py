@@ -21,3 +21,4 @@ class Command(BaseCommand):
                 tag = Tag.objects.create(
                     name=name, color=color, slug=slug
                 )
+                print(tag)
