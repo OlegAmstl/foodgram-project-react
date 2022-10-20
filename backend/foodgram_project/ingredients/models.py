@@ -39,8 +39,8 @@ class Ingredient(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Ингридиент'
-        verbose_name_plural = 'Ингридиенты'
+        verbose_name = 'Ингредиент'
+        verbose_name_plural = 'Ингредиенты'
         ordering = ('name',)
 
         constraints = (
@@ -59,4 +59,4 @@ class Ingredient(models.Model):
         )
 
     def __str__(self) -> str:
-        return f'Ингридиент: {self.name}'
+        return f'Ингредиент: {self.name}'
