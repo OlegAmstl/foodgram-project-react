@@ -32,8 +32,9 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class IngredientForRecipeSerializer(serializers.ModelSerializer):
-    id = serializers.PrimaryKeyRelatedField(source='ingredient.name',
-                                            read_only=True)
+    id = serializers.IntegerField(source='ingredient.id')
+    # id = serializers.PrimaryKeyRelatedField(source='ingredient.name',
+    #                                         read_only=True)
     name = serializers.CharField(source='ingredient.name')
     measurement_unit = serializers.CharField(
         source='ingredient.measurement_unit.name'
@@ -339,8 +340,12 @@ class RecipeShortListSerializer(serializers.ListSerializer):
 
         try:
             recipes_limit = int(recipes_limit)
-        except (ValueError, TypeError):
+        except ValueError:
             recipes_limit = None
+        except TypeError:
+            recipes_limit = None
+            # except (ValueError, TypeError):
+        #     recipes_limit = None
 
         iterable = data.all()[:recipes_limit]
 

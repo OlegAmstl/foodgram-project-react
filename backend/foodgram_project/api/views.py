@@ -355,7 +355,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         user: User = request.user
 
         cart = (
-            RecipeIngredientAmount.objects.select_related('recipe').filter(
+            RecipeIngredientAmount.objects.filter(
                 recipe__in_shopping__user=user
             ).values(
                 'ingredient__name',
