@@ -323,6 +323,7 @@ class RecipeEditSerializer(serializers.ModelSerializer):
             #     recipe=recipe, ingredient=ingredient, amount=amount
             # )
             RecipeIngredientAmount.objects.bulk_create([
+                recipe,
                 ingredient,
                 amount,
             ])
