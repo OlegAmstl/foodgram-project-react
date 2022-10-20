@@ -32,7 +32,6 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class IngredientForRecipeSerializer(serializers.ModelSerializer):
-    # id = serializers.IntegerField(source='ingredient.id')
     id = serializers.PrimaryKeyRelatedField(source='ingredient.id',
                                             read_only=True)
     name = serializers.CharField(source='ingredient.name')
@@ -320,14 +319,14 @@ class RecipeEditSerializer(serializers.ModelSerializer):
         for data_value in ingredients:
             ingredient = data_value['id']
             amount = data_value['amount']
-            RecipeIngredientAmount.objects.create(
-                recipe=recipe, ingredient=ingredient, amount=amount
-            )
-            # RecipeIngredientAmount.objects.bulk_create([
-            #     RecipeIngredientAmount(recipe=recipe),
-            #     RecipeIngredientAmount(ingredient=ingredient),
-            #     RecipeIngredientAmount(amount=amount)
-            # ])
+            # RecipeIngredientAmount.objects.create(
+            #     recipe=recipe, ingredient=ingredient, amount=amount
+            # )
+            RecipeIngredientAmount.objects.bulk_create([
+                RecipeIngredientAmount(recipe=recipe),
+                RecipeIngredientAmount(ingredient=ingredient),
+                RecipeIngredientAmount(amount=amount)
+            ])
         return recipe
 
 
@@ -340,12 +339,12 @@ class RecipeShortListSerializer(serializers.ListSerializer):
 
         try:
             recipes_limit = int(recipes_limit)
-        except ValueError:
-            recipes_limit = None
-        except TypeError:
-            recipes_limit = None
-            # except (ValueError, TypeError):
+        # except ValueError:
         #     recipes_limit = None
+        # except TypeError:
+        #     recipes_limit = None
+        except (ValueError, TypeError):
+            recipes_limit = None
 
         iterable = data.all()[:recipes_limit]
 
