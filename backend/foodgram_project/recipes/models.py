@@ -90,7 +90,7 @@ class RecipeTag(models.Model):
         )
 
     def __str__(self) -> str:
-        return f'{self.recipe}, {self.tag}'
+        return f'{self.recipe.name}, {self.tag.name}'
 
 
 class RecipeIngredientAmount(models.Model):
@@ -130,7 +130,7 @@ class RecipeIngredientAmount(models.Model):
         )
 
     def __str__(self) -> str:
-        return f'{self.recipe}, {self.ingredient}'
+        return f'{self.recipe.name}, {self.ingredient.name}'
 
 
 class UserFavoriteRecipe(models.Model):
@@ -165,6 +165,9 @@ class UserFavoriteRecipe(models.Model):
             ),
         )
 
+    def __str__(self) -> str:
+        return f'{self.user.username}, {self.recipe.name}'
+
 
 class UserShoppingCart(models.Model):
     '''Класс для списка покупок.'''
@@ -197,3 +200,6 @@ class UserShoppingCart(models.Model):
                 name='unigue_recipe_user_shoping'
             ),
         )
+
+    def __str__(self) -> str:
+        return f'{self.user.username}, {self.recipe.name}'
