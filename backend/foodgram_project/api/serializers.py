@@ -316,23 +316,23 @@ class RecipeEditSerializer(serializers.ModelSerializer):
             recipe.tags.add(tag)
 
         RecipeIngredientAmount.objects.filter(recipe=recipe).delete()
-        ingredients_list = [
-            RecipeIngredientAmount(
-                ingredient=Ingredient.objects.get(id=ingredient['id']),
-                recipe=recipe,
-                amount=ingredient['amount'],
-            ) for ingredient in ingredients
-        ]
-        RecipeIngredientAmount.objects.bulk_create(ingredients_list)
+        for data_value in ingredients:
+            ingredient = data_value['id']
+            amount = data_value['amount']
+            RecipeIngredientAmount.objects.create(
+                recipe=recipe, ingredient=ingredient, amount=amount
+            )
         return recipe
-    # for data_value in ingredients:
-    #     ingredient = data_value['id']
-    #     amount = data_value['amount']
-    #     RecipeIngredientAmount.objects.create(
-    #         recipe=recipe, ingredient=ingredient, amount=amount
-    #     )
-    # return recipe
-    # Пробовал сделать через bulk_create, но что-то ничего не получилось
+        # Пробовал сделать через bulk_create, но что-то ничего не получилось
+        # ingredients_list = [
+        #     RecipeIngredientAmount(
+        #         ingredient=Ingredient.objects.get(id=ingredient['id']),
+        #         recipe=recipe,
+        #         amount=ingredient['amount'],
+        #     ) for ingredient in ingredients
+        # ]
+        # RecipeIngredientAmount.objects.bulk_create(ingredients_list)
+        # return recipe
 
 
 class RecipeShortListSerializer(serializers.ListSerializer):
