@@ -342,7 +342,6 @@ class RecipeEditSerializer(serializers.ModelSerializer):
         # Пробовал сделать через bulk_create, но что-то ничего не получилось
 
 
-
 class RecipeShortListSerializer(serializers.ListSerializer):
     def to_representation(self, data):
         request = self.context.get('request', None)
