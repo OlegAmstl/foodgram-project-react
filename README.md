@@ -1,4 +1,4 @@
-![Status workflow](![example event parameter](https://github.com/OlegAmstl/foodgram-project-react/blob/master/.github/workflows/foodgram_workflow.yml/badge.svg?event=push))
+![Status workflow](https://github.com/OlegAmstl/foodgram-project-react/blob/master/.github/workflows/foodgram_workflow.yml/badge.svg?event=push))
 
 ### Проект Foodgram
 
