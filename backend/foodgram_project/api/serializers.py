@@ -322,6 +322,7 @@ class RecipeEditSerializer(serializers.ModelSerializer):
             RecipeIngredientAmount.objects.create(
                 recipe=recipe, ingredient=ingredient, amount=amount
             )
+        print(recipe)
         return recipe
         # Пробовал сделать через bulk_create, но что-то ничего не получилось
         # ingredients_list = [
