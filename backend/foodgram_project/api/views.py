@@ -240,6 +240,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         output_serializer = RecipeSerializer(serializer.instance)
+        print(output_serializer.data)
         return Response(
             output_serializer.data,
             status=status.HTTP_200_OK,)
