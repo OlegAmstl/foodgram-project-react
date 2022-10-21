@@ -319,14 +319,14 @@ class RecipeEditSerializer(serializers.ModelSerializer):
         for data_value in ingredients:
             ingredient = data_value['id']
             amount = data_value['amount']
-            # RecipeIngredientAmount.objects.create(
-            #     recipe=recipe, ingredient=ingredient, amount=amount
-            # )
-            RecipeIngredientAmount.objects.bulk_create([
-                recipe,
-                ingredient,
-                amount
-            ])
+            RecipeIngredientAmount.objects.create(
+                recipe=recipe, ingredient=ingredient, amount=amount
+            )
+            # RecipeIngredientAmount.objects.bulk_create([
+            #     recipe,
+            #     ingredient,
+            #     amount
+            # ])
         return recipe
         # Пробовал сделать через bulk_create, но что-то ничего не получилось
         # ingredients_list = [
