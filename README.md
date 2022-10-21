@@ -1,5 +1,4 @@
 ![example event parameter](https://github.com/OlegAmstl/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg?event=push)
-
 ### Проект Foodgram
 
 Footgram кулинарный портал, на котором вы можете найти рецепты как старой проверенной классики вреде "Котлеток с пюрешкой", так и совершенно новых блюд и даже экзотических. Так же вы сами сможете поделиться своими рецептами, чтобы и остальные могли приобщиться к изысканной гастрономии.
