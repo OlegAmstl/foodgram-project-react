@@ -332,6 +332,7 @@ class RecipeEditSerializer(serializers.ModelSerializer):
             ) for ingredient in ingredients
         ]
         RecipeIngredientAmount.objects.bulk_create(ingredients_list)
+        return recipe
 
 
 class RecipeShortListSerializer(serializers.ListSerializer):
