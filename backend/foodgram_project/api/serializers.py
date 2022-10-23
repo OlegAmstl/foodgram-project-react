@@ -16,6 +16,11 @@ from users.models import SubscribeUser
 User = get_user_model()
 
 
+class RusBase64ImageField(Base64ImageField):
+    INVALID_FILE_MESSAGE = 'Пажалуйста, загрузите подходящий файл.'
+    INVALID_TYPE_MESSAGE = 'Пажалуйста, загрузите подходящий файл.'
+
+
 class IngredientSerializer(serializers.ModelSerializer):
     measurement_unit = serializers.SlugRelatedField(
         slug_field='name',
@@ -229,7 +234,7 @@ class RecipeEditSerializer(serializers.ModelSerializer):
         queryset=Tag.objects.all(),
         many=True,
     )
-    image = Base64ImageField(required=True)
+    image = RusBase64ImageField(required=True)
 
     class Meta:
         model = Recipe

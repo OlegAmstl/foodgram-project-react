@@ -53,11 +53,15 @@ class Recipe(models.Model):
         verbose_name='Список ингредиентов',
         help_text='Список ингредиентов'
     )
+    pub_date = DateTimeField(
+        verbose_name='Дата публикации',
+        auto_now_add=True,
+    )
 
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-        ordering = ('name',)
+        ordering = ('pub_date',)
 
     def __str__(self) -> str:
         return f'Рецепт: {self.name}'
@@ -83,6 +87,7 @@ class RecipeTag(models.Model):
     class Meta:
         verbose_name = 'Тег рецепта'
         verbose_name_plural = 'Теги рецептов'
+        ordering = ('name',)
         constraints = (
             models.UniqueConstraint(
                 fields=('recipe', 'tag'),

@@ -80,13 +80,15 @@ sudo docker-compose exec web python manage.py add_ingidients_from_data
 #### Вход в панель администратора
 ```
 158.160.4.20/admin/
+login: admin
+password: doradora
 ```
 
 ### Работа с API
 - запросы к API начинаются с ```/api/```
 - в проекте доступно OpenAPI specification в формате ReDoc: ```http://<ваш IP>/api/docs/```.
 
-# ###Пример api запроса
+# Пример api запроса
 ```
 GET запрос /api/recipes/{id}/
 Ответ
