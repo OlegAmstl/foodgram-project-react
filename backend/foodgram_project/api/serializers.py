@@ -3,7 +3,7 @@ from re import match
 from django.contrib.auth import get_user_model, password_validation
 from django.core import exceptions
 from django.db import transaction
-from django.utils.translation import gettext_lazy as _
+# from django.utils.translation import gettext_lazy as _
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 
