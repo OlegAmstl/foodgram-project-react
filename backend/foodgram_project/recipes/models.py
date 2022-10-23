@@ -68,7 +68,7 @@ class Recipe(models.Model):
 
 
 class RecipeTag(models.Model):
-    '''Класс для описания тего.'''
+    '''Класс для описания тега.'''
 
     recipe = models.ForeignKey(
         Recipe,
@@ -87,7 +87,6 @@ class RecipeTag(models.Model):
     class Meta:
         verbose_name = 'Тег рецепта'
         verbose_name_plural = 'Теги рецептов'
-        ordering = ('name',)
         constraints = (
             models.UniqueConstraint(
                 fields=('recipe', 'tag'),
