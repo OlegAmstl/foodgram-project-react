@@ -17,11 +17,11 @@ from users.models import SubscribeUser
 User = get_user_model()
 
 
-class RusBase64ImageField(Base64ImageField):
-    '''Руссификация сообщений об ошибках класса Base64ImageField.'''
-
-    INVALID_FILE_MESSAGE = _('Пажалуйста, загрузите файл изображения.')
-    INVALID_TYPE_MESSAGE = _('Не удалось определить тип изображения.')
+# class RusBase64ImageField(Base64ImageField):
+#     '''Руссификация сообщений об ошибках класса Base64ImageField.'''
+#
+#     INVALID_FILE_MESSAGE = _('Пажалуйста, загрузите файл изображения.')
+#     INVALID_TYPE_MESSAGE = _('Не удалось определить тип изображения.')
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -237,7 +237,7 @@ class RecipeEditSerializer(serializers.ModelSerializer):
         queryset=Tag.objects.all(),
         many=True,
     )
-    image = RusBase64ImageField(required=True)
+    image = Base64ImageField(required=True)
 
     class Meta:
         model = Recipe
