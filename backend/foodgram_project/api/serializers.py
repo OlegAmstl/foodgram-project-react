@@ -3,7 +3,7 @@ from re import match
 from django.contrib.auth import get_user_model, password_validation
 from django.core import exceptions
 from django.db import transaction
-# from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 
@@ -17,11 +17,11 @@ from users.models import SubscribeUser
 User = get_user_model()
 
 
-# class RusBase64ImageField(Base64ImageField):
-#     '''Руссификация сообщений об ошибках класса Base64ImageField.'''
-#
-#     INVALID_FILE_MESSAGE = _('Пажалуйста, загрузите файл изображения.')
-#     INVALID_TYPE_MESSAGE = _('Не удалось определить тип изображения.')
+class RusBase64ImageField(Base64ImageField):
+    '''Руссификация сообщений об ошибках класса Base64ImageField.'''
+
+    INVALID_FILE_MESSAGE = _('Пажалуйста, загрузите файл изображения.')
+    INVALID_TYPE_MESSAGE = _('Не удалось определить тип изображения.')
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -191,6 +191,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             'image',
             'text',
             'cooking_time',
+            'pub_date'
         )
 
     def get_is_favorited(self, obj):
@@ -237,7 +238,7 @@ class RecipeEditSerializer(serializers.ModelSerializer):
         queryset=Tag.objects.all(),
         many=True,
     )
-    image = Base64ImageField(required=True)
+    image = RusBase64ImageField(required=True)
 
     class Meta:
         model = Recipe
@@ -248,6 +249,7 @@ class RecipeEditSerializer(serializers.ModelSerializer):
             'name',
             'text',
             'cooking_time',
+            'pub_date'
         )
 
     def validate_cooking_time(self, value):
@@ -361,7 +363,8 @@ class RecipeShortSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'image',
-            'cooking_time'
+            'cooking_time',
+            'pub_date'
         )
         list_serializer_class = RecipeShortListSerializer
 
