@@ -191,7 +191,6 @@ class RecipeSerializer(serializers.ModelSerializer):
             'image',
             'text',
             'cooking_time',
-            'pub_date'
         )
 
     def get_is_favorited(self, obj):
@@ -249,7 +248,6 @@ class RecipeEditSerializer(serializers.ModelSerializer):
             'name',
             'text',
             'cooking_time',
-            'pub_date'
         )
 
     def validate_cooking_time(self, value):
@@ -364,7 +362,6 @@ class RecipeShortSerializer(serializers.ModelSerializer):
             'name',
             'image',
             'cooking_time',
-            'pub_date'
         )
         list_serializer_class = RecipeShortListSerializer
 
