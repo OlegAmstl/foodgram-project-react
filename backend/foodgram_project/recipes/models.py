@@ -53,7 +53,7 @@ class Recipe(models.Model):
         verbose_name='Список ингредиентов',
         help_text='Список ингредиентов'
     )
-    pub_date = DateTimeField(
+    pub_date = models.DateTimeField(
         verbose_name='Дата публикации',
         auto_now_add=True,
     )

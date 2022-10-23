@@ -17,8 +17,10 @@ User = get_user_model()
 
 
 class RusBase64ImageField(Base64ImageField):
-    INVALID_FILE_MESSAGE = 'Пажалуйста, загрузите подходящий файл.'
-    INVALID_TYPE_MESSAGE = 'Пажалуйста, загрузите подходящий файл.'
+    '''Руссификация сообщений об ошибках класса Base64ImageField.'''
+
+    INVALID_FILE_MESSAGE = _('Пажалуйста, загрузите файл изображения.')
+    INVALID_TYPE_MESSAGE = _('Не удалось определить тип изображения.')
 
 
 class IngredientSerializer(serializers.ModelSerializer):
