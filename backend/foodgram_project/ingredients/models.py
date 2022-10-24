@@ -21,7 +21,7 @@ class MeasurementUnit(models.Model):
 
 
 class Ingredient(models.Model):
-    '''Модель для ингридиентов.'''
+    '''Модель для ингредиентов.'''
 
     name = models.CharField(
         max_length=200,

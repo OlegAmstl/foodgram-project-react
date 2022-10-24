@@ -106,8 +106,8 @@ class RecipeIngredientAmount(models.Model):
     ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
-        verbose_name='Ингридиент',
-        help_text='Ингридиент',
+        verbose_name='Ингредиент',
+        help_text='Ингредиент',
     )
     amount = models.PositiveSmallIntegerField(
         verbose_name='Количество',
@@ -120,8 +120,8 @@ class RecipeIngredientAmount(models.Model):
     )
 
     class Meta:
-        verbose_name = 'Ингридиент рецепта'
-        verbose_name_plural = 'Ингридиенты рецептов'
+        verbose_name = 'Ингредиент рецепта'
+        verbose_name_plural = 'Ингредиенты рецептов'
         constraints = (
             models.UniqueConstraint(
                 fields=('recipe', 'ingredient'),
