@@ -23,7 +23,7 @@ class IngredientAdmin(admin.ModelAdmin):
     )
     list_editable = ('name', 'measurement_unit')
     search_fields = ('name',)
-    list_filter = ('measurement_unit', )
+    list_filter = ('name', )
     empty_value_display = '-пусто-'
 
 
