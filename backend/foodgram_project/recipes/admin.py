@@ -40,7 +40,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'cooking_time',
         'image',
     )
-    list_filter = ('tags__name',)
+    list_filter = ('tags__name', 'author__username',)
 
 
 class RecipeTagAdmin(admin.ModelAdmin):
