@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from users.models import SubscribeUser, MyUser
+from users.models import MyUser, SubscribeUser
 
 
 class SubscribeUserAdmin(admin.ModelAdmin):

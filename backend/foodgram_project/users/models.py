@@ -40,7 +40,7 @@ class SubscribeUser(models.Model):
     '''Класс для отображения подписок пользователя.'''
 
     user = models.ForeignKey(
-        User,
+        MyUser,
         on_delete=models.CASCADE,
         blank=False,
         null=False,
@@ -49,7 +49,7 @@ class SubscribeUser(models.Model):
         help_text='Подписки пользователя'
     )
     author = models.ForeignKey(
-        User,
+        MyUser,
         on_delete=models.CASCADE,
         blank=False,
         null=False,
