@@ -8,6 +8,7 @@ class TagInline(admin.TabularInline):
 
     model = RecipeTag
     extra = 3
+    min_num = 1
 
 
 class IngredientInline(admin.TabularInline):
