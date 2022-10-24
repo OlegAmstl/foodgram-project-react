@@ -32,6 +32,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'text',
         'cooking_time',
         'image',
+        'tag',
     )
     list_editable = (
         'author',
