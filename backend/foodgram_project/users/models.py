@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class MyUser(AbstractUser):
+class User(AbstractUser):
     '''Класс User вместо стандартного.'''
 
     first_name = models.CharField(
@@ -40,7 +40,7 @@ class SubscribeUser(models.Model):
     '''Класс для отображения подписок пользователя.'''
 
     user = models.ForeignKey(
-        MyUser,
+        User,
         on_delete=models.CASCADE,
         blank=False,
         null=False,
@@ -49,7 +49,7 @@ class SubscribeUser(models.Model):
         help_text='Подписки пользователя'
     )
     author = models.ForeignKey(
-        MyUser,
+        User,
         on_delete=models.CASCADE,
         blank=False,
         null=False,

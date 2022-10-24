@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from users.models import MyUser, SubscribeUser
+from users.models import User, SubscribeUser
 
 
 class SubscribeUserAdmin(admin.ModelAdmin):
@@ -18,9 +18,9 @@ class SubscribeUserAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'author__username')
 
 
-class MyUserAdmin(UserAdmin):
+class UserAdmin:
     list_filter = ('username', 'email')
 
 
-admin.site.register(MyUser, MyUserAdmin)
+admin.site.register(User, UserAdmin)
 admin.site.register(SubscribeUser, SubscribeUserAdmin)
