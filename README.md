@@ -88,7 +88,7 @@ password: doradora
 - запросы к API начинаются с ```/api/```
 - в проекте доступно OpenAPI specification в формате ReDoc: ```http://<ваш IP>/api/docs/```.
 
-## Пример api запроса
+### Пример api запроса
 ```
 GET запрос /api/recipes/{id}/
 Ответ
