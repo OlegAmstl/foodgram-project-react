@@ -31,6 +31,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'author',
         'name',
         'text',
+        'favorite',
         'cooking_time',
         'image',
     )
