@@ -42,6 +42,12 @@ class RecipeAdmin(admin.ModelAdmin):
         'image',
     )
     list_filter = ('tags__name', 'author__username',)
+    readonly_fields = ('added_in_favorites',)
+
+    def added_in_favorites(self, obj):
+        return obj.favorite_recipe.count()
+
+    added_in_favorites.short_description = 'Добавлено в Избранные'
 
 
 class RecipeTagAdmin(admin.ModelAdmin):
