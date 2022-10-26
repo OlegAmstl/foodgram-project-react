@@ -19,7 +19,7 @@ class SubscribeUserAdmin(admin.ModelAdmin):
 
 
 class UserAdmin(UserAdmin):
-    list_filter = ('username', 'email')
+    list_filter = ('first_name', 'email')
 
 
 admin.site.register(User, UserAdmin)
