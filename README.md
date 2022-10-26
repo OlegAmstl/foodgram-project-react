@@ -77,11 +77,8 @@ sudo docker-compose exec web python manage.py add_ingidients_from_data
 ```
 
 ### IP проекта:
-#### Вход в панель администратора
 ```
-158.160.4.20/admin/
-login: admin
-password: doradora
+158.160.4.20
 ```
 
 ### Работа с API
